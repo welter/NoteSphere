@@ -90,7 +90,8 @@ class _HomePageState extends State<HomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GestureDetector(
+                  Expanded(
+                    child:GestureDetector(
                     //go to notes page using gorouter
                     onTap: () {
                       AppRouter.router.push("/notes");
@@ -101,17 +102,33 @@ class _HomePageState extends State<HomePage> {
                       icon: Icons.bookmark_add_outlined,
                     ),
                   ),
-                  GestureDetector(
+                  ),
+                  Expanded(
+                    child:GestureDetector(
                     //go to todo page using gorouter
                     onTap: () {
                       AppRouter.router.push("/todos");
                     },
                     child: NotesTodoCard(
-                      title: 'To-Do List',
+                      title: 'To-Do',
                       description: "${allToDos.length.toString()} Tasks",
                       icon: Icons.today_outlined,
                     ),
                   ),
+                  ),
+                  Expanded(
+                    child:GestureDetector(
+                    //go to calendar page using gorouter
+                    onTap: () {
+                      AppRouter.router.push("/calendar");
+                    },
+                    child: NotesTodoCard(
+                      title: '日历视图',
+                      description: "${allToDos.length.toString()} Calendar",
+                      icon: Icons.today_outlined,
+                    ),
+                  ),
+                  )
                 ],
               ),
               const SizedBox(height: 30),

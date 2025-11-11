@@ -16,7 +16,7 @@ class SingleNotePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Format the date
     final formattedDate = DateFormat.yMMMd().format(note.date);
-
+    print("single_note:id="+note.id);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Note"),

@@ -108,6 +108,7 @@ class _NotesByCategoryPageState extends State<NotesByCategoryPage> {
                       _editNote(noteList[index]);
                     },
                     viewSingleNote: () {
+                      print("viewSingleNote(notes_by_category.dart),noteList:"+noteList[index].toString());
                       AppRouter.router.push(
                         "/single-note",
                         extra: noteList[index],

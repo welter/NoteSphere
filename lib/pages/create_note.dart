@@ -11,9 +11,11 @@ import 'package:uuid/uuid.dart';
 
 class CreateNotePage extends StatefulWidget {
   final bool isNewCategory;
+  final String date;
   const CreateNotePage({
     super.key,
     required this.isNewCategory,
+    this.date='2000-1-1'
   });
 
   @override
@@ -26,6 +28,7 @@ class _CreateNotePageState extends State<CreateNotePage> {
   final TextEditingController _noteTitileController = TextEditingController();
   final TextEditingController _noteContentController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
+  late String _date;
   String category = 'Work';
   List<String> categories = [];
 
@@ -39,6 +42,7 @@ class _CreateNotePageState extends State<CreateNotePage> {
 
   @override
   void initState() {
+    _date=widget.date;
     // Load all the categories
     _loadCategories();
     super.initState();
@@ -53,6 +57,7 @@ class _CreateNotePageState extends State<CreateNotePage> {
 
   @override
   Widget build(BuildContext context) {
+    print("dateis:"+_date.toString());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create Note'),
@@ -263,7 +268,7 @@ class _CreateNotePageState extends State<CreateNotePage> {
                                         ? _categoryController.text
                                         : category,
                                     content: _noteContentController.text,
-                                    date: DateTime.now(),
+                                    date: (_date=='2000-1-1'?DateTime.now():DateTime.parse(_date)),
                                   ),
                                 );
                                 //show a snackbar

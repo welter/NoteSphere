@@ -60,6 +60,7 @@ class NoteService {
     try {
       //get all notes from the box
       final dynamic allNotes = await _myBox.get("notes");
+      print("addnote date"+note.date.toString());
       allNotes.add(note);
       await _myBox.put("notes", allNotes);
       // ignore: empty_catches
@@ -97,6 +98,21 @@ class NoteService {
 
     return notes;
   }
+
+  // Method to get the notes according to the date
+  Future<List<Note>> getNotesByDate({ String date='2000-1-1'}) async {
+    //get all notes from the box
+    final dynamic allNotes = await _myBox.get("notes");
+    final List<Note> notes = [];
+    for (final note in allNotes) {
+      if (note.date == date) {
+        notes.add(note);
+      }
+    }
+
+    return notes;
+  }
+
 
   //loop througn all notes and create an object where the key is the category and the value is the notes in that category
   Map<String, List<Note>> getNotesByCategoryMap(List<Note> allNotes) {

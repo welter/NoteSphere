@@ -2,6 +2,7 @@ import 'package:brainbox/models/note_model.dart';
 import 'package:brainbox/pages/create_note.dart';
 import 'package:brainbox/pages/home_page.dart';
 import 'package:brainbox/pages/notes.dart';
+import 'package:brainbox/pages/calendar.dart';
 import 'package:brainbox/pages/notes_by_category.dart';
 import 'package:brainbox/pages/single_note.dart';
 import 'package:brainbox/pages/todos.dart';
@@ -78,6 +79,15 @@ class AppRouter {
         builder: (context, state) {
           final Note note = state.extra as Note;
           return SingleNotePage(note: note);
+        },
+      ),
+
+      GoRoute(
+        name: "calendar", // Corrected route name
+        path: "/calendar", // Corrected path with parameter
+        builder: (context, state) {
+//          final Note note = state.extra as Note;
+          return CalendarCard();
         },
       ),
     ],
