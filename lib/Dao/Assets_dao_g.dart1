@@ -1,0 +1,48 @@
+
+part of '../data/trading_database.dart';
+
+
+// 示例：账户表的 DAO 类
+@DriftAccessor(tables: [Assets])
+/*drift.IntColumn get id => integer().autoIncrement()();
+drift.TextColumn get symbol => text()();//资产记号（代码）
+drift.TextColumn get name => text().nullable()();//账户名称
+drift.IntColumn get assetTypeId => integer().references(AssetsTypes, #id)();//资产类型,类型（stock, future, forex, crypto）
+drift.TextColumn get exchange => text().nullable()();//账户合约乘数
+drift.TextColumn get currency => text().withDefault(const drift.Constant('CNY'))();//账户货币
+drift.RealColumn get multiplier => real().withDefault(const drift.Constant(1.0))();
+drift.TextColumn get notes => text().nullable()();//备注*/
+
+class AssetsDao extends DatabaseAccessor<TradingDatabase> with _$AssetDaoMixin {
+  AssetsDao(TradingDatabase db) : super(db);
+
+  // 插入新账户
+  Future<int> insertAssets(AssetsCompanion assets) {
+    return into(db.assets).insert(assets);
+  }
+
+  // 根据ID获取账户
+  Future<Asset> getAssetsById(int id) {
+    return (select(db.assets)..where((a) => a.id.equals(id))).getSingle();
+  }
+
+  // 获取所有账户
+  Future<List<Asset>> getAllAssets() {
+    return select(db.assets).get();
+  }
+
+  // 删除账户
+  Future<int> deleteAssets(int id) {
+    return (delete(db.assets)..where((a) => a.id.equals(id))).go();
+  }
+
+  // 更新账户信息
+  Future<bool> updateAccount(AssetsCompanion assets) {
+    return update(db.assets).replace(assets);
+  }
+  // 根据symbol_ID获取账户
+  Future<Asset> getAssetsBySymbol(String symbol) {
+    return (select(db.assets)..where((a) => a.symbol.equals(symbol))).getSingle();
+  }
+
+}

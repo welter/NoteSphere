@@ -1,0 +1,33 @@
+
+part of '../data/trading_database.dart';
+// 示例：账户表的 DAO 类
+@DriftAccessor(tables: [Accounts])
+class AccountDao extends DatabaseAccessor<TradingDatabase> with _$AccountDaoMixin {
+  AccountDao(TradingDatabase db) : super(db);
+
+  // 插入新账户
+  Future<int> insertAccount(AccountsCompanion account) {
+    return into(db.accounts).insert(account);
+  }
+
+  // 根据ID获取账户
+  Future<Account> getAccountById(int id) {
+    return (select(db.accounts)..where((a) => a.id.equals(id))).getSingle();
+  }
+
+  // 获取所有账户
+  Future<List<Account>> getAllAccounts() {
+    return select(db.accounts).get();
+  }
+
+  // 删除账户
+  Future<int> deleteAccount(int id) {
+    return (delete(db.accounts)..where((a) => a.id.equals(id))).go();
+  }
+
+  // 更新账户信息
+  Future<bool> updateAccount(AccountsCompanion account) {
+    return update(db.accounts).replace(account);
+  }
+
+}
