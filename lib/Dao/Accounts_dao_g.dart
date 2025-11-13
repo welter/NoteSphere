@@ -29,5 +29,19 @@ class AccountDao extends DatabaseAccessor<TradingDatabase> with _$AccountDaoMixi
   Future<bool> updateAccount(AccountsCompanion account) {
     return update(db.accounts).replace(account);
   }
+  // 获取账户的总余额（例如，可以进行汇总或其他分析操作）
+  Future<double> getTotalBalance() async {
+    final result = await( db.select(db.accounts)).get();
+    // 使用 fold 累加账户余额，确保 sum 是一个 Future<double>
+    final totalBalance = await result.fold<Future<double>>(
+      Future.value(0.0), // 初始值为 0.0，类型为 Future<double>
+          (Future<double> sum, Account row) async {
+        final balance = row.balance;  // 假设 balance 是同步的
+        return sum.then((s) => s + balance);  // 使用 .then 来处理累加过程
+      },
+    );
+
+    return totalBalance;
+  }
 
 }

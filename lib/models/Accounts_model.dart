@@ -3,7 +3,7 @@ class m_Account {
   final int id; // 账户id
   final String name; // 账户名称
   final int typeId; // 账户类型id
-  final String currency; // 账户货币
+  final int currencyId; // 账户货币
   final double balance; // 账户余额
   final DateTime createdAt; // 创建时间
 
@@ -12,7 +12,7 @@ class m_Account {
     required this.id,
     required this.name,
     required this.typeId,
-    required this.currency,
+    required this.currencyId,
     required this.balance,
     required this.createdAt,
   });
@@ -23,7 +23,7 @@ class m_Account {
       id: data['id'],
       name: data['name'],
       typeId: data['typeId'],
-      currency: data['currency'],
+      currencyId: data['0'],
       balance: data['balance'],
       createdAt: DateTime.parse(data['createdAt']),
     );
@@ -35,7 +35,7 @@ class m_Account {
       'id': id,
       'name': name,
       'typeId': typeId,
-      'currency': currency,
+      'currency': currencyId,
       'balance': balance,
       'createdAt': createdAt.toIso8601String(),
     };
@@ -45,7 +45,7 @@ class m_Account {
     return m_Account(id: account.id,
         name: account.name,
         typeId: account.typeId,
-        currency: account.currency,
+        currencyId: account.currencyId,
         balance: account.balance,
         createdAt: account.createdAt);
   }

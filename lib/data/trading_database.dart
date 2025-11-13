@@ -8,11 +8,25 @@ import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
 
 part 'trading_database.g.dart';
-part '../Dao/Accounts_dao_g.dart1';
-part '../Dao/AccountsType_dao_g.dart1';
-part '../Dao/AssetsTypes_dao_g.dart1';
-part '../Dao/Assets_dao_g.dart1';
-part '../Dao/Transactions_dao_g.dart1';
+part '../Dao/Accounts_dao_g.dart';
+part '../Dao/AccountsType_dao_g.dart';
+part '../Dao/AssetsTypes_dao_g.dart';
+part '../Dao/Assets_dao_g.dart';
+part '../Dao/Transactions_dao_g.dart';
+part '../Dao/EntryCondtions_dao_g.dart';
+part '../Dao/Sessions_dao_g.dart';
+part '../Dao/TraderTypes_dao_g.dart';
+part '../Dao/Moods_dao_g.dart';
+part '../Dao/Sides_dao_g.dart';
+part '../Dao/TransactionMedia_dao_g.dart';
+part '../Dao/Remarks_dao_g.dart';
+part '../Dao/RemarkMedia_dao_g.dart';
+part '../Dao/Tags_dao_g.dart';
+part '../Dao/TransationTags_dao_g.dart';
+part '../Dao/Settings_dao_g.dart';
+part '../Dao/Categories_dao_g.dart';
+part '../Dao/Reason_dao_g.dart';
+part '../Dao/Currencys_dao_g.dart';
 
 /// ================= 表定义 =================
 //账户表
@@ -20,12 +34,18 @@ class Accounts extends drift.Table {
   drift.IntColumn get id => integer().autoIncrement()();
   drift.TextColumn get name => text()();//账户名称
   drift.IntColumn get typeId => integer().references(AccountTypes, #id)();//账户类型id,账户类型（stock / future / cash / crypto 等）
-  drift.TextColumn get currency => text().withDefault(const drift.Constant('CNY'))();//账户货币
+  drift.IntColumn get currencyId => integer().references(Currencys, #id)();//账户货币
   drift.RealColumn get balance => real().withDefault(const drift.Constant(0.0))();//账户金额
   drift.DateTimeColumn get createdAt => dateTime()(); // 插入时使用 Value(DateTime.now())//账户创建时间
 }
 //账户类型表
 class AccountTypes extends drift.Table {
+  drift.IntColumn get id => integer().autoIncrement()();
+  drift.TextColumn get name => text().nullable()();//名称
+  drift.DateTimeColumn get createdAt => dateTime()();//创建时间
+}
+//货币类型表
+class Currencys extends drift.Table {
   drift.IntColumn get id => integer().autoIncrement()();
   drift.TextColumn get name => text().nullable()();//名称
   drift.DateTimeColumn get createdAt => dateTime()();//创建时间
@@ -36,13 +56,13 @@ class Assets extends drift.Table {
   drift.IntColumn get id => integer().autoIncrement()();
   drift.TextColumn get symbol => text()();//资产记号（代码）
   drift.TextColumn get name => text().nullable()();//账户名称
-  drift.IntColumn get assetTypeId => integer().references(AssetsTypes, #id)();//资产类型,类型（stock, future, forex, crypto）
+  drift.IntColumn get assetTypeId => integer().references(AssetsTypes, #id)();//资产类型
   drift.TextColumn get exchange => text().nullable()();//账户合约乘数
-  drift.TextColumn get currency => text().withDefault(const drift.Constant('CNY'))();//账户货币
+  drift.IntColumn get currencyId => integer().references(Currencys, #id)();//账户货币
   drift.RealColumn get multiplier => real().withDefault(const drift.Constant(1.0))();
   drift.TextColumn get notes => text().nullable()();//备注
 }
-//资产类型表
+//资产类型表,类型（stock, future, forex, crypto）
 class AssetsTypes extends drift.Table {
   drift.IntColumn get id => integer().autoIncrement()();
   drift.TextColumn get name => text().nullable()();//名称
@@ -56,10 +76,7 @@ class Transactions extends drift.Table {
   drift.IntColumn get assetId => integer().references(Assets, #id)();//交易所使用的资产id
 
   drift.DateTimeColumn get date => dateTime()();//交易时间
-  drift.IntColumn get sideId => integer().references(Sides, #id)();//side 字段的常见取值： Buy（买入）：表示你在购买某个资产（如股票、期货等），这意味着你希望在未来以更高的价格出售它以获利。
-                                 // Sell（卖出）：表示你在出售某个资产，这意味着你希望通过卖出资产来实现盈利或止损。 Long（做多）：有时也会使用 side
-                                // 来表示你做多的方向（实际上这与买入相同，但在期货或外汇市场中，做多通常用 long）。 Short（做空）：相反，side 也可能表示
-                               // 你做空的方向（即卖空资产，预期资产价格下跌）
+  drift.IntColumn get sideId => integer().references(Sides, #id)();//side
   drift.RealColumn get quantity => real()();//交易数量
   drift.RealColumn get price => real()();//交易价格
   drift.RealColumn get notional => real().nullable()();
@@ -91,8 +108,33 @@ class Sessions extends drift.Table {
 }
 
 //交易类型表
+// 字段的常见取值： Buy（买入）：表示你在购买某个资产（如股票、期货等），这意味着你希望在未来以更高的价格出售它以获利。
+//                                  // Sell（卖出）：表示你在出售某个资产，这意味着你希望通过卖出资产来实现盈利或止损。 Long（做多）：有时也会使用 side
+//                                 // 来表示你做多的方向（实际上这与买入相同，但在期货或外汇市场中，做多通常用 long）。 Short（做空）：相反，side 也可能表示
+//                                // 你做空的方向（即卖空资产，预期资产价格下跌）
 class TraderTypes extends drift.Table {
   drift.IntColumn get id => integer().autoIncrement()();
+
+  drift.TextColumn get name => text().nullable()(); //名称
+  drift.DateTimeColumn get createdAt => dateTime()(); //创建时间
+}
+
+//交易分类表，一个交易可属多个分类，分类有树状层次
+class Categories extends drift.Table {
+  drift.IntColumn get id => integer().autoIncrement()();
+
+  drift.TextColumn get name => text().nullable()(); //名称
+  drift.IntColumn get parentId => integer().withDefault(0 as drift.Expression<int>)(); //父标签id
+  drift.IntColumn get transactionId =>
+      integer().references(Transactions, #id, onDelete: KeyAction.cascade)();//交易记录id
+  drift.DateTimeColumn get createdAt => dateTime()(); //创建时间
+}
+
+
+//常用交易理由表
+class Reason extends drift.Table {
+  drift.IntColumn get id => integer().autoIncrement()();
+
   drift.TextColumn get name => text().nullable()();//名称
   drift.DateTimeColumn get createdAt => dateTime()();//创建时间
 }
@@ -100,6 +142,7 @@ class TraderTypes extends drift.Table {
 //心情表
 class Moods extends drift.Table {
   drift.IntColumn get id => integer().autoIncrement()();
+
   drift.TextColumn get name => text().nullable()();//名称
   drift.DateTimeColumn get createdAt => dateTime()();//创建时间
   drift.TextColumn get iconName => text().nullable()();//图标名称
@@ -113,7 +156,7 @@ class Sides extends drift.Table {
 }
 
 
-//交易记录附件（暂不使用，备用）
+//交易记录附件表（暂不使用，备用）
 class TransactionMedia extends drift.Table {
   drift.IntColumn get id => integer().autoIncrement()();
   drift.IntColumn get transactionId =>
@@ -153,7 +196,7 @@ class TransactionTags extends drift.Table {
   @override
   Set<drift.Column> get primaryKey => {transactionId, tagId};
 }
-
+//系统配置表
 class Settings extends drift.Table {
   drift.TextColumn get key => text()();
   drift.TextColumn get value => text().nullable()();
@@ -179,7 +222,10 @@ class Settings extends drift.Table {
     Sessions,
     TraderTypes,
     Moods,
-    Sides
+    Sides,
+    Categories,
+    Reason,
+    Currencys
   ],
 )
 class TradingDatabase extends _$TradingDatabase {
@@ -187,6 +233,30 @@ class TradingDatabase extends _$TradingDatabase {
 
   @override
   int get schemaVersion => 1;
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(
+      onCreate: (m) async {
+        await m.createAll();
+
+        // Add a bunch of default items in a batch
+        await batch((b) {
+          // 检查每个表是否存在，若不存在则创建
+          b.customStatement(
+              'CREATE TABLE IF NOT EXISTS accounts (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, typeId INTEGER, currency TEXT, balance REAL, createdAt TEXT)');
+          b.customStatement(
+              'CREATE TABLE IF NOT EXISTS account_types (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, createdAt TEXT)');
+          b.customStatement(
+              'CREATE TABLE IF NOT EXISTS assets (id INTEGER PRIMARY KEY AUTOINCREMENT, symbol TEXT, name TEXT, assetTypeId INTEGER, exchange TEXT, currency TEXT, multiplier REAL, notes TEXT)');
+          b.customStatement(
+              'CREATE TABLE IF NOT EXISTS assets_types (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, createdAt TEXT)');
+          b.customStatement(
+              'CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, accountId INTEGER, assetId INTEGER, date TEXT, sideId INTEGER, quantity REAL, price REAL, notional REAL, fee REAL, tax REAL, reason TEXT, entryConditionId INTEGER, sessionId INTEGER, traderTypeId INTEGER, stopLoss REAL, exitPrice REAL, moodId INTEGER, createdAt TEXT)');
+          // 其他表类似处理
+        });
+      },
+    );
+  }
 /*
 
   // ---------- Accounts ----------

@@ -13,7 +13,7 @@ drift.TextColumn get currency => text().withDefault(const drift.Constant('CNY'))
 drift.RealColumn get multiplier => real().withDefault(const drift.Constant(1.0))();
 drift.TextColumn get notes => text().nullable()();//备注*/
 
-class AssetsDao extends DatabaseAccessor<TradingDatabase> with _$AssetDaoMixin {
+class AssetsDao extends DatabaseAccessor<TradingDatabase> with _$AssetsDaoMixin {
   AssetsDao(TradingDatabase db) : super(db);
 
   // 插入新账户
