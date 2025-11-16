@@ -120,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                     child:GestureDetector(
                     //go to calendar page using gorouter
                     onTap: () {
-                      AppRouter.router.push("/calendar");
+                      AppRouter.router.push("/createTransaction");
                     },
                     child: NotesTodoCard(
                       title: '日历视图',

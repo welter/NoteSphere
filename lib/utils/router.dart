@@ -7,6 +7,7 @@ import 'package:brainbox/pages/notes_by_category.dart';
 import 'package:brainbox/pages/single_note.dart';
 import 'package:brainbox/pages/todos.dart';
 import 'package:brainbox/pages/update_note.dart';
+import 'package:brainbox/pages/create_Transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -88,6 +89,14 @@ class AppRouter {
         builder: (context, state) {
 //          final Note note = state.extra as Note;
           return CalendarCard();
+        },
+      ),
+      GoRoute(
+        name: "createTransaction", // Corrected route name
+        path: "/createTransaction", // Corrected path with parameter
+        builder: (context, state) {
+//          final Note note = state.extra as Note;
+          return create_Transaction();
         },
       ),
     ],

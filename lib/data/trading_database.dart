@@ -72,24 +72,24 @@ class AssetsTypes extends drift.Table {
 class Transactions extends drift.Table {
   drift.IntColumn get id => integer().autoIncrement()();
 
-  drift.IntColumn get accountId => integer().references(Accounts, #id)();//交易所使用的账户id
-  drift.IntColumn get assetId => integer().references(Assets, #id)();//交易所使用的资产id
+  drift.IntColumn get accountId => integer().references(Accounts, #id)();//交易所使用的账户id--
+  drift.IntColumn get assetId => integer().references(Assets, #id)();//交易所使用的资产id--
 
-  drift.DateTimeColumn get date => dateTime()();//交易时间
-  drift.IntColumn get sideId => integer().references(Sides, #id)();//side
-  drift.RealColumn get quantity => real()();//交易数量
-  drift.RealColumn get price => real()();//交易价格
+  drift.DateTimeColumn get date => dateTime()();//交易时间--
+  drift.IntColumn get sideId => integer().references(Sides, #id)();//side--
+  drift.RealColumn get quantity => real()();//交易数量--
+  drift.RealColumn get price => real()();//交易价格--
   drift.RealColumn get notional => real().nullable()();
-  drift.RealColumn get fee => real().withDefault(const drift.Constant(0.0))();//交易费用
-  drift.RealColumn get tax => real().withDefault(const drift.Constant(0.0))();//交易税款
+  drift.RealColumn get fee => real().withDefault(const drift.Constant(0.0))();//交易费用--
+  drift.RealColumn get tax => real().withDefault(const drift.Constant(0.0))();//交易税款--
 
-  drift.TextColumn get reason => text().nullable()();//交易理由
-  drift.IntColumn get entryConditionId => integer().references(EntryConditions, #id)();//进场状态
-  drift.IntColumn get sessionId => integer().references(Sessions, #id)();//交易场所
-  drift.IntColumn get traderTypeId => integer().references(TraderTypes, #id)();//交易类型
-  drift.RealColumn get stopLoss => real().nullable()();//止损位
-  drift.RealColumn get exitPrice => real().nullable()();//预期离场价
-  drift.IntColumn get moodId => integer().references(Moods, #id)();//心情
+  drift.TextColumn get reason => text().nullable()();//交易理由--
+  drift.IntColumn get entryConditionId => integer().references(EntryConditions, #id)();//进场状态--
+  drift.IntColumn get sessionId => integer().references(Sessions, #id)();//交易场所--
+  drift.IntColumn get traderTypeId => integer().references(TraderTypes, #id)();//交易类型--
+  drift.RealColumn get stopLoss => real().nullable()();//止损位--
+  drift.RealColumn get exitPrice => real().nullable()();//预期离场价--
+  drift.IntColumn get moodId => integer().references(Moods, #id)();//心情--
 
   drift.DateTimeColumn get createdAt => dateTime()();//记录创建时间
 }
@@ -108,10 +108,7 @@ class Sessions extends drift.Table {
 }
 
 //交易类型表
-// 字段的常见取值： Buy（买入）：表示你在购买某个资产（如股票、期货等），这意味着你希望在未来以更高的价格出售它以获利。
-//                                  // Sell（卖出）：表示你在出售某个资产，这意味着你希望通过卖出资产来实现盈利或止损。 Long（做多）：有时也会使用 side
-//                                 // 来表示你做多的方向（实际上这与买入相同，但在期货或外汇市场中，做多通常用 long）。 Short（做空）：相反，side 也可能表示
-//                                // 你做空的方向（即卖空资产，预期资产价格下跌）
+
 class TraderTypes extends drift.Table {
   drift.IntColumn get id => integer().autoIncrement()();
 
@@ -149,10 +146,15 @@ class Moods extends drift.Table {
 }
 
 //side买卖方向表
+// / 字段的常见取值： Buy（买入）：表示你在购买某个资产（如股票、期货等），这意味着你希望在未来以更高的价格出售它以获利。
+// //                                  // Sell（卖出）：表示你在出售某个资产，这意味着你希望通过卖出资产来实现盈利或止损。 Long（做多）：有时也会使用 side
+// //                                 // 来表示你做多的方向（实际上这与买入相同，但在期货或外汇市场中，做多通常用 long）。 Short（做空）：相反，side 也可能表示
+// //                                // 你做空的方向（即卖空资产，预期资产价格下跌）
 class Sides extends drift.Table {
   drift.IntColumn get id => integer().autoIncrement()();
-  drift.TextColumn get name => text().nullable()();//名称
-  drift.DateTimeColumn get createdAt => dateTime()();//创建时间
+
+  drift.TextColumn get name => text().nullable()(); //名称
+  drift.DateTimeColumn get createdAt => dateTime()(); //创建时间
 }
 
 
