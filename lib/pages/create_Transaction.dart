@@ -6,19 +6,20 @@ import 'package:brainbox/utils/constants.dart';
 import 'package:brainbox/utils/router.dart';
 import 'package:brainbox/utils/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/services/text_formatter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class CreateTransactionPage extends StatefulWidget {
   final bool isNewCategory;
   final String date;
-  const CreateTransactionPage({
-    super.key,
-    required this.isNewCategory,
-    this.date='2000-1-1'
-  });
+
+  const CreateTransactionPage(
+      {super.key, required this.isNewCategory, this.date = '2000-1-1'});
 
   @override
   State<CreateTransactionPage> createState() => _CreateTransactionPageState();
@@ -44,7 +45,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
 
   @override
   void initState() {
-    _date=widget.date;
+    _date = widget.date;
     // Load all the categories
     _loadCategories();
     super.initState();
@@ -59,83 +60,95 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("dateis:"+_date.toString());
+    print("dateis:" + _date.toString());
+    bool _showAssetDropdown = false;
+    bool _showAccountDropdown = false;
+    bool _showSideDropdown = false;
+    ;
+    bool _showTradeTypeDropdown = false;
+    bool _showEntryConditionDropdown = false;
+    bool _showMoodDropdown = false;
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            AppRouter.router.go(
-              "/",
-            );
-          },
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              AppRouter.router.go(
+                "/",
+              );
+            },
+          ),
         ),
-      ),
-      body: 
-       Form(
-        child: Column(
-          children: [
-            Expanded(
+        body: Form(
+            child: Column(children: [
+          Expanded(
             child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-                              padding:
-                              EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  'Asset*',
-                                                  style:styleManager.textStyle,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child:
-                                                    Container(
-                                                    width: double.infinity,
-                                                    height: 48,
-                                                    decoration:BoxDecoration(
-                                                      // 在这里设置装饰属性（如背景颜色、边框等）
-                                                      borderRadius: BorderRadius.circular(12),
-                                                      border: Border.all(color: Colors.grey, width: 2),
-                                                    ),
-                                                    child:
-                                                    wGFDropdown(
-                                                      controller: _model
-                                                          .assetValueController ,
-                                                      items: [
-                                                        'Insurance Provider 1',
-                                                        'Insurance Provider 2',
-                                                        'Insurance Provider 3'
-                                                      ].map<DropdownMenuItem<String>>((String value) {
-                                                        return DropdownMenuItem<String>(
-                                                        value: value,
-                                                        child: Text(value),
-                                                        );
-                                                      }).toList(),
-                                                      onChanged: (val) =>(
-                                                          _model.assetValue =
-                                                              val),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
+                    child: Column(
+                        children: [
+                      //Asset
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              children: [
+                                //Asset Label
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Asset*',
+                                      style: styleManager.textStyle,
+                                    ),
+                                  ],
+                                ),
+                                //Assed text and dropdown
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 48,
+                                        decoration: styleManager.boxDecoration,
+                                        child: _showAssetDropdown
+                                            ? //welter
+                                            Expanded(
+                                                child: wGFDropdown(
+                                                  controller: _model
+                                                      .assetValueController,
+                                                  items: [
+                                                    'Insurance Provider 1',
+                                                    'Insurance Provider 2',
+                                                    'Insurance Provider 3'
+                                                  ].map<
+                                                          DropdownMenuItem<
+                                                              String>>(
+                                                      (String value) {
+                                                    return DropdownMenuItem<
+                                                        String>(
+                                                      value: value,
+                                                      child: Text(value),
+                                                    );
+                                                  }).toList(),
+                                                  onChanged: (val) {
+                                                    safeSetState(() => _model
+                                                        .assetValue = val);
+                                                  },
 /*                                                      width: double.infinity,
                                                       height: 52,
                                                       searchHintTextStyle:,
                                                       searchTextStyle:,
                                                       textStyle:,*/
-                                                      hint: Text('Select one...'),
-                                                        icon:Icon(Icons.arrow_drop_down, color: Colors.black),
-                                                        iconEnabledColor:Color(0x14324),
-                                                        elevation: 2,
+                                                  hint: Text('Select one...'),
+                                                  icon: Icon(
+                                                      Icons.arrow_drop_down,
+                                                      color: Colors.black),
+                                                  iconEnabledColor:
+                                                      Color(0x14324),
+                                                  elevation: 2,
 /*                                                      'Search for an item...',
                                                       searchCursorColor:,
 
@@ -148,365 +161,349 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                                       isSearchable: true,
                                                       isMultiSelect: false,
                                                         searchHintText:    */
-                                                    ),
-                                                  ),
                                                 ),
-                                              ],
-                                            ),
-                                          ]//.divide(SizedBox(height: 4)),
-                                        ),
+                                              )
+                                            : SizedBox(
+                                                width: 10,
+                                                height: 10,
+                                              ), //welter
                                       ),
-                                    ]//.divide(SizedBox(width: 12)),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  'Entry Date*',
-                                                  style:styleManager.textStyle
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: InkWell(
-                                                    splashColor:
-                                                    Colors.transparent,
-                                                    focusColor:
-                                                    Colors.transparent,
-                                                    hoverColor:
-                                                    Colors.transparent,
-                                                    highlightColor:
-                                                    Colors.transparent,
-                                                    onTap: () async {
-                                                      final _datePickedDate =
-                                                      await showDatePicker(
-                                                        context: context,
-                                                        initialDate:
-                                                        DateTime.now(),
-                                                        firstDate:
-                                                        DateTime.now(),
-                                                        lastDate:
-                                                        DateTime(2050),
-                                                        builder:
-                                                            (context, child) {
-                                                          return wrapInMaterialDatePickerTheme(
-                                                            context,
-                                                            child!
-                                                          );
-                                                        },
-                                                      );
-                                                      TimeOfDay?
-                                                      _datePickedTime;
-                                                      if (_datePickedDate !=
-                                                          null) {
-                                                        _datePickedTime =
-                                                        await showTimePicker(
-                                                          context: context,
-                                                          initialTime: TimeOfDay
-                                                              .fromDateTime(
-                                                              DateTime.now()),
-                                                          builder:
-                                                              (context, child) {
-                                                            return wrapInMaterialTimePickerTheme(
-                                                              context,
-                                                              child!,
-                                                            );
-                                                          },
-                                                        );
-                                                      }
+                                    ),
+                                  ],
+                                ),
+                              ].divide(SizedBox(height: 4)),
+                            ),
+                          ),
+                        ].divide(SizedBox(width: 12)),
+                      ),
+                      //Entry Date
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              children: [
+                                //Entry Date Label
+                                Row(
+                                  children: [
+                                    Text('Entry Date*',
+                                        style: styleManager.textStyle),
+                                  ],
+                                ),
+                                //Entry Date text and selector
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: InkWell(
+                                        splashColor: Colors.transparent,
+                                        focusColor: Colors.transparent,
+                                        hoverColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
+                                        onTap: () async {
+                                          final _datePickedDate =
+                                              await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime.now(),
+                                            lastDate: DateTime(2050),
+                                            builder: (context, child) {
+                                              return wrapInMaterialDatePickerTheme(
+                                                  context, child!);
+                                            },
+                                          );
+                                          TimeOfDay? _datePickedTime;
+                                          if (_datePickedDate != null) {
+                                            _datePickedTime =
+                                                await showTimePicker(
+                                              context: context,
+                                              initialTime:
+                                                  TimeOfDay.fromDateTime(
+                                                      DateTime.now()),
+                                              builder: (context, child) {
+                                                return wrapInMaterialTimePickerTheme(
+                                                  context,
+                                                  child!,
+                                                );
+                                              },
+                                            );
+                                          }
 
-                                                      if (_datePickedDate !=
-                                                          null &&
-                                                          _datePickedTime !=
-                                                              null) {
-                                                        safeSetState(() {
-                                                          _model.datePicked =
-                                                              DateTime(
-                                                                _datePickedDate
-                                                                    .year,
-                                                                _datePickedDate
-                                                                    .month,
-                                                                _datePickedDate.day,
-                                                                _datePickedTime!
-                                                                    .hour,
-                                                                _datePickedTime
-                                                                    .minute,
-                                                              );
-                                                        });
-                                                      } else if (_model
-                                                          .datePicked !=
-                                                          null) {
-                                                        safeSetState(() {
-                                                          _model.datePicked =
-                                                              DateTime.now();
-                                                        });
-                                                      }
-                                                    },
-                                                    child: Container(
-                                                      width: double.infinity,
-                                                      height: 48,
-                                                      decoration:styleManager.boxDecoration,
-                                                      child: TextFormField(
-                                                        controller: _model
-                                                            .dateTextController,
-                                                        focusNode: _model
-                                                            .dateFocusNode,
-                                                        autofocus: true,
-                                                        textCapitalization:
-                                                        TextCapitalization
-                                                            .words,
-                                                        obscureText: false,
-                                                        decoration:
-                                                        InputDecoration(
-                                                          labelText:
-                                                          'EntryDate*',
-                                                          labelStyle:styleManager.textStyle,
-                                                          hintStyle:styleManager.textStyle,
-                                                          errorStyle:styleManager.textStyle,
-                                                          enabledBorder:
-                                                          OutlineInputBorder(
-                                                            borderSide:
-                                                            BorderSide(
-                                                              color: styleManager.color,
-                                                              width: 2,
-                                                            ),
-                                                            borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                12),
-                                                          ),
-                                                          focusedBorder:
-                                                          OutlineInputBorder(
-                                                            borderSide:
-                                                            BorderSide(
-                                                              color: styleManager.color,
-                                                              width: 2,
-                                                            ),
-                                                            borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                12),
-                                                          ),
-                                                          errorBorder:
-                                                          OutlineInputBorder(
-                                                            borderSide:
-                                                            BorderSide(
-                                                              color: styleManager.color,
-                                                              width: 2,
-                                                            ),
-                                                            borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                12),
-                                                          ),
-                                                          focusedErrorBorder:
-                                                          OutlineInputBorder(
-                                                            borderSide:
-                                                            BorderSide(
-                                                              color: styleManager.color,
-                                                              width: 2,
-                                                            ),
-                                                            borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                12),
-                                                          ),
-                                                          filled: true,
-                                                          fillColor: (_model
-                                                              .dateFocusNode
-                                                              ?.hasFocus ??
-                                                              false)
-                                                              ? styleManager.color
-                                                              : styleManager.color,
-                                                          contentPadding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                              16,
-                                                              20,
-                                                              16,
-                                                              20),
-                                                        ),
-                                                        style:styleManager.textStyle,
-                                                        cursorColor:styleManager.color,
-                                                        validator: _model
-                                                            .dateTextControllerValidator(
-                                                            context),
-                                                        inputFormatters: [
-                                                          _model.dateMask
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
+                                          if (_datePickedDate != null &&
+                                              _datePickedTime != null) {
+                                            safeSetState(() {
+                                              _model.datePicked = DateTime(
+                                                _datePickedDate.year,
+                                                _datePickedDate.month,
+                                                _datePickedDate.day,
+                                                _datePickedTime!.hour,
+                                                _datePickedTime.minute,
+                                              );
+                                            });
+                                          } else if (_model.datePicked !=
+                                              null) {
+                                            safeSetState(() {
+                                              _model.datePicked =
+                                                  DateTime.now();
+                                            });
+                                          }
+                                        },
+                                        child: Container(
+                                          width: double.infinity,
+                                          height: 48,
+                                          decoration:
+                                              styleManager.boxDecoration,
+                                          child: TextFormField(
+                                            controller:
+                                                _model.dateTextController,
+                                            focusNode: _model.dateFocusNode,
+                                            autofocus: true,
+                                            textCapitalization:
+                                                TextCapitalization.words,
+                                            obscureText: false,
+                                            decoration: InputDecoration(
+                                              labelText: 'EntryDate*',
+                                              labelStyle:
+                                                  styleManager.textStyle,
+                                              hintStyle: styleManager.textStyle,
+                                              errorStyle:
+                                                  styleManager.textStyle,
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: const BorderSide(
+                                                  color: styleManager.color,
+                                                  width: 2,
                                                 ),
-                                              ],
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: styleManager.color,
+                                                  width: 2,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              errorBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: styleManager.color,
+                                                  width: 2,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              focusedErrorBorder:
+                                                  OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: styleManager.color,
+                                                  width: 2,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              filled: true,
+                                              fillColor: (_model.dateFocusNode
+                                                          ?.hasFocus ??
+                                                      false)
+                                                  ? styleManager.color
+                                                  : styleManager.color,
+                                              contentPadding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(16, 20, 16, 20),
                                             ),
-                                          ].divide(SizedBox(height: 4)),
+                                            style: styleManager.textStyle,
+                                            cursorColor: styleManager.color,
+                                            validator: _model
+                                                .dateTextControllerValidator(
+                                                    context),
+                                            inputFormatters: [_model.dateMask],
+                                          ),
                                         ),
                                       ),
-                                    ].divide(SizedBox(width: 12)),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  'Price*',
-                                                  style:,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    height: 48,
-                                                    decoration:,
-                                                    child: TextFormField(
-                                                      controller:,
-                                                      focusNode:,
-                                                      autofocus: true,
-                                                      decoration:
-                                                      InputDecoration(
-                                                        labelText: 'Price*',
-                                                        labelStyle:,
-                                                        hintStyle:,
-                                                        errorStyle:,
-                                                        enabledBorder:,
-                                                        focusedBorder:
-                                                        inputFocusedBorder(),
-                                                        errorBorder:
-                                                        inputErrorBorder(),
-                                                        focusedErrorBorder:
-                                                        inputFocusedErrorBorder(),
-                                                        filled: true,
-                                                        fillColor: ,
-                                                      ),
-                                                      style:,
-                                                      cursorColor:,
-                                                      validator:,
-                                                      inputFormatters:,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ].divide(SizedBox(height: 4)),
+                                    ),
+                                  ],
+                                ),
+                              ].divide(SizedBox(height: 4)),
+                            ),
+                          ),
+                        ].divide(SizedBox(width: 12)),
+                      ),
+                      //Price and Quantity
+                      Row(
+                        children: [
+                          //Price
+                          Expanded(
+                            child: Column(
+                              children: [
+                                //price Label
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Price*',
+                                      style: styleManager.textStyle,
+                                    ),
+                                  ],
+                                ),
+                                //Price input
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 48,
+                                        decoration: styleManager.boxDecoration,
+                                        child: TextFormField(
+                                          controller:
+                                              _model().textFormController,
+                                          focusNode: null,
+                                          autofocus: true,
+                                          decoration: InputDecoration(
+                                            labelText: 'Price*',
+                                            labelStyle: styleManager.textStyle,
+                                            hintStyle: styleManager.textStyle,
+                                            errorStyle: styleManager.textStyle,
+                                            enabledBorder:
+                                                styleManager.inputEnabledBorder,
+                                            focusedBorder:
+                                                styleManager.inputFocusedBorder,
+                                            errorBorder:
+                                                styleManager.inputErrorBorder,
+                                            focusedErrorBorder: styleManager
+                                                .inputFocusedErrorBorder,
+                                            filled: true,
+                                            fillColor: styleManager.fillColor,
+                                          ),
+                                          style: styleManager.textStyle,
+                                          cursorColor: styleManager.cursorColor,
+                                          validator: _model.priceValidator,
+                                          inputFormatters:
+                                              _model().priceInputFormatters,
                                         ),
                                       ),
-                                      Expanded(
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  'Quantity*',
-                                                  style:,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    height: 48,
-                                                    decoration:,
-                                                    child: TextFormField(
-                                                      controller:,
-                                                      focusNode:,
-                                                      autofocus: true,
-                                                      decoration:
-                                                      InputDecoration(
-                                                        labelText: 'Quantity*',
-                                                        labelStyle:,
-                                                        hintStyle:,
-                                                        errorStyle:,
-                                                        enabledBorder:,
-                                                        focusedBorder:
-                                                        inputFocusedBorder(),
-                                                        errorBorder:
-                                                        inputErrorBorder(),
-                                                        focusedErrorBorder:
-                                                        inputFocusedErrorBorder(),
-                                                        filled: true,
-                                                        fillColor: ,
-                                                      ),
-                                                      style:,
-                                                      cursorColor:,
-                                                      validator:,
-                                                      inputFormatters:,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ].divide(SizedBox(height: 4)),
+                                    ),
+                                  ],
+                                ),
+                              ].divide(SizedBox(height: 4)),
+                            ),
+                          ),
+                          //Quantity
+                          Expanded(
+                            child: Column(
+                              children: [
+                                //Quantity Label
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Quantity*',
+                                      style: styleManager.textStyle,
+                                    ),
+                                  ],
+                                ),
+                                //Quantity Input
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 48,
+                                        decoration: styleManager.boxDecoration,
+                                        child: TextFormField(
+                                          controller:
+                                              _model().textFormController,
+                                          focusNode: null,
+                                          autofocus: true,
+                                          decoration: InputDecoration(
+                                            labelText: 'Quantity*',
+                                            labelStyle: styleManager.textStyle,
+                                            hintStyle: styleManager.textStyle,
+                                            errorStyle: styleManager.textStyle,
+                                            enabledBorder:
+                                                styleManager.inputEnabledBorder,
+                                            focusedBorder:
+                                                styleManager.inputFocusedBorder,
+                                            errorBorder:
+                                                styleManager.inputErrorBorder,
+                                            focusedErrorBorder: styleManager
+                                                .inputFocusedErrorBorder,
+                                            filled: true,
+                                            fillColor: styleManager.fillColor,
+                                          ),
+                                          style: styleManager.textStyle,
+                                          cursorColor: styleManager.cursorColor,
+                                          validator: _model.quantityValidator,
+                                          inputFormatters:
+                                              _model().quantityInputFormatters,
                                         ),
                                       ),
-                                    ].divide(SizedBox(width: 12)),
-                                  ),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Expanded(
-                                          child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  'Account*',
-                                                  style:,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    height: 48,
-                                                    decoration:
-                                                    child: GFDropdown(
-                                                      controller: _model
-                                                          .assetValueController ??=
-                                                          FormFieldController<
-                                                              String>(null),
-                                                      items: [
-                                                        'Insurance Provider 1',
-                                                        'Insurance Provider 2',
-                                                        'Insurance Provider 3'
-                                                      ].map<DropdownMenuItem<String>>((String value) {
-                                                        return DropdownMenuItem<String>(
-                                                        value: value,
-                                                        child: Text(value),
-                                                        );
-                                                      }).toList(),
-                                                      onChanged: (val) =>
-                                                          safeSetState(() =>
-                                                          _model.assetValue =
-                                                              val),
-                                                      width: double.infinity,
+                                    ),
+                                  ],
+                                ),
+                              ].divide(SizedBox(height: 4)),
+                            ),
+                          ),
+                        ].divide(SizedBox(width: 12)),
+                      ),
+                      //Account and Session
+                      Row(
+                        children: [
+                          //Account
+                          Expanded(
+                            child: Column(
+                              children: [
+                                //Account Label
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Account*',
+                                      style: styleManager.textStyle,
+                                    ),
+                                  ],
+                                ),
+                                //Account Dropdown
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 48,
+                                        decoration: styleManager.boxDecoration,
+                                        child: _showAccountDropdown
+                                            ? //welter
+                                            Expanded(
+                                                child: wGFDropdown(
+                                                  controller: _model
+                                                      .accountValueController,
+                                                  items: [
+                                                    'Insurance Provider 1',
+                                                    'Insurance Provider 2',
+                                                    'Insurance Provider 3'
+                                                  ].map<
+                                                          DropdownMenuItem<
+                                                              String>>(
+                                                      (String value) {
+                                                    return DropdownMenuItem<
+                                                        String>(
+                                                      value: value,
+                                                      child: Text(value),
+                                                    );
+                                                  }).toList(),
+                                                  onChanged: (val) {
+                                                    safeSetState(() => _model
+                                                        .accountValue = val);
+                                                  },
+/*                                                      width: double.infinity,
                                                       height: 52,
                                                       searchHintTextStyle:,
                                                       searchTextStyle:,
-                                                      textStyle:,
-                                                      hintText: 'Select one...',
-                                                      searchHintText:
-                                                      'Search for an item...',
+                                                      textStyle:,*/
+                                                  hint: Text('Select one...'),
+                                                  icon: Icon(
+                                                      Icons.arrow_drop_down,
+                                                      color: Colors.black),
+                                                  iconEnabledColor:
+                                                      Color(0x14324),
+                                                  elevation: 2,
+/*                                                      'Search for an item...',
                                                       searchCursorColor:,
-                                                      icon: ,
-                                                      fillColor: ,
-                                                      elevation: 2,
+
                                                       borderColor:,
                                                       borderWidth: 2,
                                                       borderRadius: 12,
@@ -515,63 +512,80 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                                       isOverButton: true,
                                                       isSearchable: true,
                                                       isMultiSelect: false,
-                                                    ),
-                                                  ),
+                                                        searchHintText:    */
                                                 ),
-                                              ],
-                                            ),
-                                          ].divide(SizedBox(height: 4)),
-                                        ),
+                                              )
+                                            : SizedBox(
+                                                width: 10,
+                                                height: 10,
+                                              ), //welter
                                       ),
-                                      Expanded(
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  'Session*',
-                                                  style:,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    height: 48,
-                                                    decoration:
-                                                    child: GFDropdown(
-                                                      controller: _model
-                                                          .assetValueController ??=
-                                                          FormFieldController<
-                                                              String>(null),
-                                                      items: [
-                                                        'Insurance Provider 1',
-                                                        'Insurance Provider 2',
-                                                        'Insurance Provider 3'
-                                                      ].map<DropdownMenuItem<String>>((String value) {
-                                                        return DropdownMenuItem<String>(
-                                                        value: value,
-                                                        child: Text(value),
-                                                        );
-                                                      }).toList(),
-                                                      onChanged: (val) =>
-                                                          safeSetState(() =>
-                                                          _model.assetValue =
-                                                              val),
-                                                      width: double.infinity,
+                                    ),
+                                  ],
+                                ),
+                              ].divide(SizedBox(height: 4)),
+                            ),
+                          ),
+                          //Session
+                          Expanded(
+                            child: Column(
+                              children: [
+                                //Session Label
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Session*',
+                                      style: styleManager.textStyle,
+                                    ),
+                                  ],
+                                ),
+                                //Session Drawdown
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 48,
+                                        decoration: styleManager.boxDecoration,
+                                        child: _showAccountDropdown
+                                            ? //welter
+                                            Expanded(
+                                                child: wGFDropdown(
+                                                  controller: _model
+                                                      .sessionValueController,
+                                                  items: [
+                                                    'Insurance Provider 1',
+                                                    'Insurance Provider 2',
+                                                    'Insurance Provider 3'
+                                                  ].map<
+                                                          DropdownMenuItem<
+                                                              String>>(
+                                                      (String value) {
+                                                    return DropdownMenuItem<
+                                                        String>(
+                                                      value: value,
+                                                      child: Text(value),
+                                                    );
+                                                  }).toList(),
+                                                  onChanged: (val) {
+                                                    safeSetState(() => _model
+                                                        .sessionValue = val);
+                                                  },
+/*                                                      width: double.infinity,
                                                       height: 52,
                                                       searchHintTextStyle:,
                                                       searchTextStyle:,
-                                                      textStyle:,
-                                                      hintText: 'Select one...',
-                                                      searchHintText:
-                                                      'Search for an item...',
+                                                      textStyle:,*/
+                                                  hint: Text('Select one...'),
+                                                  icon: Icon(
+                                                      Icons.arrow_drop_down,
+                                                      color: Colors.black),
+                                                  iconEnabledColor:
+                                                      Color(0x14324),
+                                                  elevation: 2,
+/*                                                      'Search for an item...',
                                                       searchCursorColor:,
-                                                      icon: ,
-                                                      fillColor: ,
-                                                      elevation: 2,
+
                                                       borderColor:,
                                                       borderWidth: 2,
                                                       borderRadius: 12,
@@ -580,276 +594,315 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                                       isOverButton: true,
                                                       isSearchable: true,
                                                       isMultiSelect: false,
-                                                    ),
-                                                  ),
+                                                        searchHintText:    */
                                                 ),
-                                              ],
-                                            ),
-                                          ].divide(SizedBox(height: 4)),
+                                              )
+                                            : SizedBox(
+                                                width: 10,
+                                                height: 10,
+                                              ), //welter
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ].divide(SizedBox(height: 4)),
+                            ),
+                          ),
+                        ].divide(SizedBox(width: 12)),
+                      ),
+                      //Fee and Tax
+                      Row(
+                        children: [
+                          //Fee
+                          Expanded(
+                            child: Column(
+                              children: [
+                                //Fee Label
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Fee',
+                                      style: styleManager.textStyle,
+                                    ),
+                                  ],
+                                ),
+                                //Fee input
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 48,
+                                        decoration: styleManager.boxDecoration,
+                                        child: TextFormField(
+                                          controller:
+                                              _model().textFormController,
+                                          focusNode: null,
+                                          autofocus: true,
+                                          decoration: InputDecoration(
+                                            labelText: 'Fee',
+                                            labelStyle: styleManager.textStyle,
+                                            hintStyle: styleManager.textStyle,
+                                            errorStyle: styleManager.textStyle,
+                                            enabledBorder:
+                                                styleManager.inputEnabledBorder,
+                                            focusedBorder:
+                                                styleManager.inputFocusedBorder,
+                                            errorBorder:
+                                                styleManager.inputErrorBorder,
+                                            focusedErrorBorder: styleManager
+                                                .inputFocusedErrorBorder,
+                                            filled: true,
+                                            fillColor: styleManager.fillColor,
+                                          ),
+                                          style: styleManager.textStyle,
+                                          cursorColor: styleManager.cursorColor,
+                                          validator: _model.priceValidator,
+                                          inputFormatters:
+                                              _model().priceInputFormatters,
                                         ),
                                       ),
-                                    ].divide(SizedBox(width: 12)),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  'Fee',
-                                                  style:,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    height: 48,
-                                                    decoration:,
-                                                    child: TextFormField(
-                                                      controller:,
-                                                      focusNode:,
-                                                      autofocus: true,
-                                                      decoration:
-                                                      InputDecoration(
-                                                        labelText: 'Fee',
-                                                        labelStyle:,
-                                                        hintStyle:,
-                                                        errorStyle:,
-                                                        enabledBorder:,
-                                                        focusedBorder:
-                                                        inputFocusedBorder(),
-                                                        errorBorder:
-                                                        inputErrorBorder(),
-                                                        focusedErrorBorder:
-                                                        inputFocusedErrorBorder(),
-                                                        filled: true,
-                                                        fillColor: ,
-                                                      ),
-                                                      style:,
-                                                      cursorColor:,
-                                                      validator:,
-                                                      inputFormatters:,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ].divide(SizedBox(height: 4)),
+                                    ),
+                                  ],
+                                ),
+                              ].divide(SizedBox(height: 4)),
+                            ),
+                          ),
+                          //Tax
+                          Expanded(
+                            child: Column(
+                              children: [
+                                //Tax Label
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Tax',
+                                      style: styleManager.textStyle,
+                                    ),
+                                  ],
+                                ),
+                                //Tax Input
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 48,
+                                        decoration: styleManager.boxDecoration,
+                                        child: TextFormField(
+                                          controller:
+                                              _model().textFormController,
+                                          focusNode: null,
+                                          autofocus: true,
+                                          decoration: InputDecoration(
+                                            labelText: 'Tax',
+                                            labelStyle: styleManager.textStyle,
+                                            hintStyle: styleManager.textStyle,
+                                            errorStyle: styleManager.textStyle,
+                                            enabledBorder:
+                                                styleManager.inputEnabledBorder,
+                                            focusedBorder:
+                                                styleManager.inputFocusedBorder,
+                                            errorBorder:
+                                                styleManager.inputErrorBorder,
+                                            focusedErrorBorder: styleManager
+                                                .inputFocusedErrorBorder,
+                                            filled: true,
+                                            fillColor: styleManager.fillColor,
+                                          ),
+                                          style: styleManager.textStyle,
+                                          cursorColor: styleManager.cursorColor,
+                                          validator: _model.quantityValidator,
+                                          inputFormatters:
+                                              _model().quantityInputFormatters,
                                         ),
                                       ),
-                                      Expanded(
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  'Tax',
-                                                  style:,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    height: 48,
-                                                    decoration:,
-                                                    child: TextFormField(
-                                                      controller:,
-                                                      focusNode:,
-                                                      autofocus: true,
-                                                      decoration:
-                                                      InputDecoration(
-                                                        labelText: 'Tax',
-                                                        labelStyle:,
-                                                        hintStyle:,
-                                                        errorStyle:,
-                                                        enabledBorder:,
-                                                        focusedBorder:
-                                                        inputFocusedBorder(),
-                                                        errorBorder:
-                                                        inputErrorBorder(),
-                                                        focusedErrorBorder:
-                                                        inputFocusedErrorBorder(),
-                                                        filled: true,
-                                                        fillColor: ,
-                                                      ),
-                                                      style:,
-                                                      cursorColor:,
-                                                      validator:,
-                                                      inputFormatters:,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ].divide(SizedBox(height: 4)),
+                                    ),
+                                  ],
+                                ),
+                              ].divide(SizedBox(height: 4)),
+                            ),
+                          ),
+                        ].divide(SizedBox(width: 12)),
+                      ),
+                      //StopLoss and ExitPrice
+                      Row(
+                        children: [
+                          //StopLoss
+                          Expanded(
+                            child: Column(
+                              children: [
+                                //StopLoss Label
+                                Row(
+                                  children: [
+                                    Text(
+                                      'StopLoss',
+                                      style: styleManager.textStyle,
+                                    ),
+                                  ],
+                                ),
+                                //StopLoss input
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 48,
+                                        decoration: styleManager.boxDecoration,
+                                        child: TextFormField(
+                                          controller:
+                                              _model().textFormController,
+                                          focusNode: null,
+                                          autofocus: true,
+                                          decoration: InputDecoration(
+                                            labelText: 'StopLoss',
+                                            labelStyle: styleManager.textStyle,
+                                            hintStyle: styleManager.textStyle,
+                                            errorStyle: styleManager.textStyle,
+                                            enabledBorder:
+                                                styleManager.inputEnabledBorder,
+                                            focusedBorder:
+                                                styleManager.inputFocusedBorder,
+                                            errorBorder:
+                                                styleManager.inputErrorBorder,
+                                            focusedErrorBorder: styleManager
+                                                .inputFocusedErrorBorder,
+                                            filled: true,
+                                            fillColor: styleManager.fillColor,
+                                          ),
+                                          style: styleManager.textStyle,
+                                          cursorColor: styleManager.cursorColor,
+                                          validator: _model.priceValidator,
+                                          inputFormatters:
+                                              _model().priceInputFormatters,
                                         ),
                                       ),
-                                    ].divide(SizedBox(width: 12)),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  'StopLoss',
-                                                  style:,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    height: 48,
-                                                    decoration:,
-                                                    child: TextFormField(
-                                                      controller:,
-                                                      focusNode:,
-                                                      autofocus: true,
-                                                      decoration:
-                                                      InputDecoration(
-                                                        labelText: 'StopLoss',
-                                                        labelStyle:,
-                                                        hintStyle:,
-                                                        errorStyle:,
-                                                        enabledBorder:,
-                                                        focusedBorder:
-                                                        inputFocusedBorder(),
-                                                        errorBorder:
-                                                        inputErrorBorder(),
-                                                        focusedErrorBorder:
-                                                        inputFocusedErrorBorder(),
-                                                        filled: true,
-                                                        fillColor: ,
-                                                      ),
-                                                      style:,
-                                                      cursorColor:,
-                                                      validator:,
-                                                      inputFormatters:,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ].divide(SizedBox(height: 4)),
+                                    ),
+                                  ],
+                                ),
+                              ].divide(SizedBox(height: 4)),
+                            ),
+                          ),
+                          //ExitPrice
+                          Expanded(
+                            child: Column(
+                              children: [
+                                //ExitPrice Label
+                                Row(
+                                  children: [
+                                    Text(
+                                      'ExitPrice',
+                                      style: styleManager.textStyle,
+                                    ),
+                                  ],
+                                ),
+                                //ExitPrice Input
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 48,
+                                        decoration: styleManager.boxDecoration,
+                                        child: TextFormField(
+                                          controller:
+                                              _model().textFormController,
+                                          focusNode: null,
+                                          autofocus: true,
+                                          decoration: InputDecoration(
+                                            labelText: 'ExitPrice',
+                                            labelStyle: styleManager.textStyle,
+                                            hintStyle: styleManager.textStyle,
+                                            errorStyle: styleManager.textStyle,
+                                            enabledBorder:
+                                                styleManager.inputEnabledBorder,
+                                            focusedBorder:
+                                                styleManager.inputFocusedBorder,
+                                            errorBorder:
+                                                styleManager.inputErrorBorder,
+                                            focusedErrorBorder: styleManager
+                                                .inputFocusedErrorBorder,
+                                            filled: true,
+                                            fillColor: styleManager.fillColor,
+                                          ),
+                                          style: styleManager.textStyle,
+                                          cursorColor: styleManager.cursorColor,
+                                          validator: _model.quantityValidator,
+                                          inputFormatters:
+                                              _model().quantityInputFormatters,
                                         ),
                                       ),
-                                      Expanded(
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  'ExitPrice',
-                                                  style:,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    height: 48,
-                                                    decoration:,
-                                                    child: TextFormField(
-                                                      controller:,
-                                                      focusNode:,
-                                                      autofocus: true,
-                                                      decoration:
-                                                      InputDecoration(
-                                                        labelText: 'ExitPrice',
-                                                        labelStyle:,
-                                                        hintStyle:,
-                                                        errorStyle:,
-                                                        enabledBorder:,
-                                                        focusedBorder:
-                                                        inputFocusedBorder(),
-                                                        errorBorder:
-                                                        inputErrorBorder(),
-                                                        focusedErrorBorder:
-                                                        inputFocusedErrorBorder(),
-                                                        filled: true,
-                                                        fillColor: ,
-                                                      ),
-                                                      style:,
-                                                      cursorColor:,
-                                                      validator:,
-                                                      inputFormatters:,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ].divide(SizedBox(height: 4)),
-                                        ),
-                                      ),
-                                    ].divide(SizedBox(width: 12)),
-                                  ),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Expanded(
-                                          child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  'Side*',
-                                                  style:,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    height: 48,
-                                                    decoration:
-                                                    child: GFDropdown(
-                                                      controller: _model
-                                                          .assetValueController ??=
-                                                          FormFieldController<
-                                                              String>(null),
-                                                      items: [
-                                                        'Insurance Provider 1',
-                                                        'Insurance Provider 2',
-                                                        'Insurance Provider 3'
-                                                      ].map<DropdownMenuItem<String>>((String value) {
-                                                        return DropdownMenuItem<String>(
-                                                        value: value,
-                                                        child: Text(value),
-                                                        );
-                                                      }).toList(),
-                                                      onChanged: (val) =>
-                                                          safeSetState(() =>
-                                                          _model.assetValue =
-                                                              val),
-                                                      width: double.infinity,
+                                    ),
+                                  ],
+                                ),
+                              ].divide(SizedBox(height: 4)),
+                            ),
+                          ),
+                        ].divide(SizedBox(width: 12)),
+                      ),
+                      //Side and TradeType
+                      Row(
+                        children: [
+                          //Side
+                          Expanded(
+                            child: Column(
+                              children: [
+                                //Side Label
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Side*',
+                                      style: styleManager.textStyle,
+                                    ),
+                                  ],
+                                ),
+                                //Side Dropdown
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 48,
+                                        decoration: styleManager.boxDecoration,
+                                        child: _showSideDropdown
+                                            ? //welter
+                                            Expanded(
+                                                child: wGFDropdown(
+                                                  controller: _model
+                                                      .sideValueController,
+                                                  items: [
+                                                    'Insurance Provider 1',
+                                                    'Insurance Provider 2',
+                                                    'Insurance Provider 3'
+                                                  ].map<
+                                                          DropdownMenuItem<
+                                                              String>>(
+                                                      (String value) {
+                                                    return DropdownMenuItem<
+                                                        String>(
+                                                      value: value,
+                                                      child: Text(value),
+                                                    );
+                                                  }).toList(),
+                                                  onChanged: (val) {
+                                                    safeSetState(() =>
+                                                        _model.sideValue = val);
+                                                  },
+/*                                                      width: double.infinity,
                                                       height: 52,
                                                       searchHintTextStyle:,
                                                       searchTextStyle:,
-                                                      textStyle:,
-                                                      hintText: 'Select one...',
-                                                      searchHintText:
-                                                      'Search for an item...',
+                                                      textStyle:,*/
+                                                  hint: Text('Select one...'),
+                                                  icon: Icon(
+                                                      Icons.arrow_drop_down,
+                                                      color: Colors.black),
+                                                  iconEnabledColor:
+                                                      Color(0x14324),
+                                                  elevation: 2,
+/*                                                      'Search for an item...',
                                                       searchCursorColor:,
-                                                      icon: ,
-                                                      fillColor: ,
-                                                      elevation: 2,
+
                                                       borderColor:,
                                                       borderWidth: 2,
                                                       borderRadius: 12,
@@ -858,63 +911,80 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                                       isOverButton: true,
                                                       isSearchable: true,
                                                       isMultiSelect: false,
-                                                    ),
-                                                  ),
+                                                        searchHintText:    */
                                                 ),
-                                              ],
-                                            ),
-                                          ].divide(SizedBox(height: 4)),
-                                        ),
+                                              )
+                                            : SizedBox(
+                                                width: 10,
+                                                height: 10,
+                                              ), //welter
                                       ),
-                                      Expanded(
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  'TradeType',
-                                                  style:,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    height: 48,
-                                                    decoration:
-                                                    child: GFDropdown(
-                                                      controller: _model
-                                                          .assetValueController ??=
-                                                          FormFieldController<
-                                                              String>(null),
-                                                      items: [
-                                                        'Insurance Provider 1',
-                                                        'Insurance Provider 2',
-                                                        'Insurance Provider 3'
-                                                      ].map<DropdownMenuItem<String>>((String value) {
-                                                        return DropdownMenuItem<String>(
-                                                        value: value,
-                                                        child: Text(value),
-                                                        );
-                                                      }).toList(),
-                                                      onChanged: (val) =>
-                                                          safeSetState(() =>
-                                                          _model.assetValue =
-                                                              val),
-                                                      width: double.infinity,
+                                    ),
+                                  ],
+                                ),
+                              ].divide(SizedBox(height: 4)),
+                            ),
+                          ),
+                          //TradeType
+                          Expanded(
+                            child: Column(
+                              children: [
+                                //TradeType Label
+                                Row(
+                                  children: [
+                                    Text(
+                                      'TradeType',
+                                      style: styleManager.textStyle,
+                                    ),
+                                  ],
+                                ),
+                                //TradeType Drawdown
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 48,
+                                        decoration: styleManager.boxDecoration,
+                                        child: _showTradeTypeDropdown
+                                            ? //welter
+                                            Expanded(
+                                                child: wGFDropdown(
+                                                  controller: _model
+                                                      .tradeTypeValueController,
+                                                  items: [
+                                                    'Insurance Provider 1',
+                                                    'Insurance Provider 2',
+                                                    'Insurance Provider 3'
+                                                  ].map<
+                                                          DropdownMenuItem<
+                                                              String>>(
+                                                      (String value) {
+                                                    return DropdownMenuItem<
+                                                        String>(
+                                                      value: value,
+                                                      child: Text(value),
+                                                    );
+                                                  }).toList(),
+                                                  onChanged: (val) {
+                                                    safeSetState(() => _model
+                                                        .tradeTypeValue = val);
+                                                  },
+/*                                                      width: double.infinity,
                                                       height: 52,
                                                       searchHintTextStyle:,
                                                       searchTextStyle:,
-                                                      textStyle:,
-                                                      hintText: 'Select one...',
-                                                      searchHintText:
-                                                      'Search for an item...',
+                                                      textStyle:,*/
+                                                  hint: Text('Select one...'),
+                                                  icon: Icon(
+                                                      Icons.arrow_drop_down,
+                                                      color: Colors.black),
+                                                  iconEnabledColor:
+                                                      Color(0x14324),
+                                                  elevation: 2,
+/*                                                      'Search for an item...',
                                                       searchCursorColor:,
-                                                      icon: ,
-                                                      fillColor: ,
-                                                      elevation: 2,
+
                                                       borderColor:,
                                                       borderWidth: 2,
                                                       borderRadius: 12,
@@ -923,334 +993,391 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                                       isOverButton: true,
                                                       isSearchable: true,
                                                       isMultiSelect: false,
-                                                    ),
-                                                  ),
+                                                        searchHintText:    */
                                                 ),
-                                              ],
-                                            ),
-                                          ].divide(SizedBox(height: 4)),
-                                        ),
+                                              )
+                                            : SizedBox(
+                                                width: 10,
+                                                height: 10,
+                                              ), //welter
                                       ),
-                                    ].divide(SizedBox(width: 12)),
-                                  ),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
+                                    ),
+                                  ],
+                                ),
+                              ].divide(SizedBox(height: 4)),
+                            ),
+                          ),
+                        ].divide(SizedBox(width: 12)),
+                      ),
+                      //EntryCondition and Mood
+                      Row(
+                        children: [
+                          //EntryCondition
+                          Expanded(
+                            child: Column(
+                              children: [
+                                //EntryCondition Label
+                                Row(
+                                  children: [
+                                    Text(
+                                      'EntryCondition',
+                                      style: styleManager.textStyle,
+                                    ),
+                                  ],
+                                ),
+                                //EntryCondition Dropdown
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 48,
+                                        decoration: styleManager.boxDecoration,
+                                        child: _showEntryConditionDropdown
+                                            ? //welter
+                                            Expanded(
+                                                child: wGFDropdown(
+                                                  controller: _model
+                                                      .entryConditionValueController,
+                                                  items: [
+                                                    'Insurance Provider 1',
+                                                    'Insurance Provider 2',
+                                                    'Insurance Provider 3'
+                                                  ].map<
+                                                          DropdownMenuItem<
+                                                              String>>(
+                                                      (String value) {
+                                                    return DropdownMenuItem<
+                                                        String>(
+                                                      value: value,
+                                                      child: Text(value),
+                                                    );
+                                                  }).toList(),
+                                                  onChanged: (val) {
+                                                    safeSetState(() => _model
+                                                            .entryConditionValue =
+                                                        val);
+                                                  },
+/*                                                      width: double.infinity,
+                                                      height: 52,
+                                                      searchHintTextStyle:,
+                                                      searchTextStyle:,
+                                                      textStyle:,*/
+                                                  hint: Text('Select one...'),
+                                                  icon: Icon(
+                                                      Icons.arrow_drop_down,
+                                                      color: Colors.black),
+                                                  iconEnabledColor:
+                                                      Color(0x14324),
+                                                  elevation: 2,
+/*                                                      'Search for an item...',
+                                                      searchCursorColor:,
+
+                                                      borderColor:,
+                                                      borderWidth: 2,
+                                                      borderRadius: 12,
+                                                      margin:,
+                                                      hidesUnderline: true,
+                                                      isOverButton: true,
+                                                      isSearchable: true,
+                                                      isMultiSelect: false,
+                                                        searchHintText:    */
+                                                ),
+                                              )
+                                            : SizedBox(
+                                                width: 10,
+                                                height: 10,
+                                              ), //welter
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ].divide(SizedBox(height: 4)),
+                            ),
+                          ),
+                          //Mood
+                          Expanded(
+                            child: Column(
+                              children: [
+                                //Mood Label
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Mood',
+                                      style: styleManager.textStyle,
+                                    ),
+                                  ],
+                                ),
+                                //Mood Drawdown
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 48,
+                                        decoration: styleManager.boxDecoration,
+                                        child: _showMoodDropdown
+                                            ? //welter
+                                            Expanded(
+                                                child: wGFDropdown(
+                                                  controller: _model
+                                                      .moodValueController,
+                                                  items: [
+                                                    'Insurance Provider 1',
+                                                    'Insurance Provider 2',
+                                                    'Insurance Provider 3'
+                                                  ].map<
+                                                          DropdownMenuItem<
+                                                              String>>(
+                                                      (String value) {
+                                                    return DropdownMenuItem<
+                                                        String>(
+                                                      value: value,
+                                                      child: Text(value),
+                                                    );
+                                                  }).toList(),
+                                                  onChanged: (val) {
+                                                    safeSetState(() =>
+                                                        _model.moodValue = val);
+                                                  },
+/*                                                      width: double.infinity,
+                                                      height: 52,
+                                                      searchHintTextStyle:,
+                                                      searchTextStyle:,
+                                                      textStyle:,*/
+                                                  hint: Text('Select one...'),
+                                                  icon: Icon(
+                                                      Icons.arrow_drop_down,
+                                                      color: Colors.black),
+                                                  iconEnabledColor:
+                                                      Color(0x14324),
+                                                  elevation: 2,
+/*                                                      'Search for an item...',
+                                                      searchCursorColor:,
+
+                                                      borderColor:,
+                                                      borderWidth: 2,
+                                                      borderRadius: 12,
+                                                      margin:,
+                                                      hidesUnderline: true,
+                                                      isOverButton: true,
+                                                      isSearchable: true,
+                                                      isMultiSelect: false,
+                                                        searchHintText:    */
+                                                ),
+                                              )
+                                            : SizedBox(
+                                                width: 10,
+                                                height: 10,
+                                              ), //welter
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ].divide(SizedBox(height: 4)),
+                            ),
+                          ),
+                        ].divide(SizedBox(width: 12)),
+                      ),
+                      //Reason
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              children: [
+                                //Reason Label
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Text(
+                                      'Reason',
+                                      style: styleManager.textStyle,
+                                    ),
+                                  ],
+                                ),
+                                //Reason Drawdown and Reason Text
+                                Container(
+                                  width: double.infinity,
+                                  height: 120,
+                                  decoration: styleManager.boxDecoration,
+                                  child: Column(
                                     children: [
-                                      Expanded(
-                                          child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  'EntryCondition',
-                                                  style:,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    height: 48,
-                                                    decoration:
-                                                    child: GFDropdown(
-                                                      controller: _model
-                                                          .assetValueController ??=
-                                                          FormFieldController<
-                                                              String>(null),
-                                                      items: [
-                                                        'Insurance Provider 1',
-                                                        'Insurance Provider 2',
-                                                        'Insurance Provider 3'
-                                                      ].map<DropdownMenuItem<String>>((String value) {
-                                                        return DropdownMenuItem<String>(
-                                                        value: value,
-                                                        child: Text(value),
-                                                        );
-                                                      }).toList(),
-                                                      onChanged: (val) =>
-                                                          safeSetState(() =>
-                                                          _model.assetValue =
-                                                              val),
-                                                      width: double.infinity,
-                                                      height: 52,
-                                                      searchHintTextStyle:,
-                                                      searchTextStyle:,
-                                                      textStyle:,
-                                                      hintText: 'Select one...',
-                                                      searchHintText:
-                                                      'Search for an item...',
-                                                      searchCursorColor:,
-                                                      icon: ,
-                                                      fillColor: ,
-                                                      elevation: 2,
-                                                      borderColor:,
-                                                      borderWidth: 2,
-                                                      borderRadius: 12,
-                                                      margin:,
-                                                      hidesUnderline: true,
-                                                      isOverButton: true,
-                                                      isSearchable: true,
-                                                      isMultiSelect: false,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ].divide(SizedBox(height: 4)),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  'Mood',
-                                                  style:,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    height: 48,
-                                                    decoration:
-                                                    child: GFDropdown(
-                                                      controller: _model
-                                                          .assetValueController ??=
-                                                          FormFieldController<
-                                                              String>(null),
-                                                      items: [
-                                                        'Insurance Provider 1',
-                                                        'Insurance Provider 2',
-                                                        'Insurance Provider 3'
-                                                      ].map<DropdownMenuItem<String>>((String value) {
-                                                        return DropdownMenuItem<String>(
-                                                        value: value,
-                                                        child: Text(value),
-                                                        );
-                                                      }).toList(),
-                                                      onChanged: (val) =>
-                                                          safeSetState(() =>
-                                                          _model.assetValue =
-                                                              val),
-                                                      width: double.infinity,
-                                                      height: 52,
-                                                      searchHintTextStyle:,
-                                                      searchTextStyle:,
-                                                      textStyle:,
-                                                      hintText: 'Select one...',
-                                                      searchHintText:
-                                                      'Search for an item...',
-                                                      searchCursorColor:,
-                                                      icon: ,
-                                                      fillColor: ,
-                                                      elevation: 2,
-                                                      borderColor:,
-                                                      borderWidth: 2,
-                                                      borderRadius: 12,
-                                                      margin:,
-                                                      hidesUnderline: true,
-                                                      isOverButton: true,
-                                                      isSearchable: true,
-                                                      isMultiSelect: false,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ].divide(SizedBox(height: 4)),
-                                        ),
-                                      ),
-                                    ].divide(SizedBox(width: 12)),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Text(
-                                                  'Reason',
-                                                  style:,
-                                                ),
-                                              ],
-                                            ),
-                                            Container(
+                                      //Reason Drawdown
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Container(
                                               width: double.infinity,
-                                              height: 100,
-                                              decoration: ,
-                                              child: Column(
-                                                mainAxisSize:
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Expanded(
-                                                        child: Container(
-                                                          width:
-                                                          double.infinity,
-                                                          height: 48,
-                                                          decoration:,
-                                                          child:
-                                                          GFDropdown(
-                                                            controller: _model
-                                                            .assetValueController ??=
-                                                            FormFieldController<
-                                                              String>(null),
-                                                            items: [
-                                                              'Insurance Provider 1',
-                                                              'Insurance Provider 2',
-                                                              'Insurance Provider 3'
-                                                            ].map<DropdownMenuItem<String>>((String value) {
-                                                            return DropdownMenuItem<String>(
-                                                            value: value,
-                                                            child: Text(value),
-                                                              );
-                                                              }).toList(),
-                                                            onChanged: (val) =>
-                                                          safeSetState(() =>
-                                                          _model.assetValue =
-                                                              val),
-                                                          width: double.infinity,
-                                                          height: 52,
-                                                          searchHintTextStyle:,
-                                                          searchTextStyle:,
-                                                          textStyle:,
-                                                          hintText: 'Select one...',
-                                                          searchHintText:
-                                                          'Search for an item...',
-                                                          searchCursorColor:,
-                                                          icon: ,
-                                                          fillColor: ,
-                                                          elevation: 2,
-                                                          borderColor:,
-                                                          borderWidth: 2,
-                                                          borderRadius: 12,
-                                                          margin:,
-                                                          hidesUnderline: true,
-                                                          isOverButton: true,
-                                                          isSearchable: true,
-                                                          isMultiSelect: false,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Expanded(
-                                                        child: Container(
-                                                          width:
-                                                          double.infinity,
-                                                          height: 48,
-                                                          decoration:,
-                                                          child: Text(
-                                                            'Gender',
-                                                            style: ,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ].divide(SizedBox(height: 12)),
+                                              height: 48,
+                                              decoration:
+                                                  styleManager.boxDecoration,
+                                              child: wGFDropdown(
+                                                isExpanded: true,
+                                                controller: _model
+                                                    .reasonValueController,
+                                                items: [
+                                                  'Insurance Provider 1',
+                                                  'Insurance Provider 2',
+                                                  'Insurance Provider 3'
+                                                ].map<DropdownMenuItem<String>>(
+                                                    (String value) {
+                                                  return DropdownMenuItem<
+                                                      String>(
+                                                    value: value,
+                                                    child: Text(value),
+                                                  );
+                                                }).toList(),
+                                                onChanged: (val) {
+                                                  safeSetState(() =>
+                                                      _model.reasonValue = val);
+                                                },
+/*                                                      width: double.infinity,
+                                                      height: 52,
+                                                      searchHintTextStyle:,
+                                                      searchTextStyle:,
+                                                      textStyle:,*/
+                                                hint: Text('Select one...'),
+                                                icon: const Icon(
+                                                    Icons.arrow_drop_down,
+                                                    color: Colors.black),
+                                                iconEnabledColor:
+                                                    Color(0x14324),
+                                                elevation: 2,
+/*                                                      'Search for an item...',
+                                                      searchCursorColor:,
+
+                                                      borderColor:,
+                                                      borderWidth: 2,
+                                                      borderRadius: 12,
+                                                      margin:,
+                                                      hidesUnderline: true,
+                                                      isOverButton: true,
+                                                      isSearchable: true,
+                                                      isMultiSelect: false,
+                                                        searchHintText:    */
                                               ),
                                             ),
-                                          ].divide(SizedBox(height: 4)),
-                                        ),
+                                          ),
+                                        ],
                                       ),
-                                    ].divide(SizedBox(width: 12)),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  'Remark',
-                                                  style:,
-                                                ),
-                                              ],
-                                            ),
+                                      //Reason Text
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                              child: Stack(children: [
                                             Container(
                                               width: double.infinity,
-                                              height: 100,
-                                              decoration:,
-                                              child: Slidable(
-                                                endActionPane: ActionPane(
-                                                  motion: const ScrollMotion(),
-                                                  extentRatio: 0.25,
-                                                  children: [
-                                                    SlidableAction(
-                                                      label: 'Delete',
-                                                      backgroundColor:,
-                                                      icon: Icons
-                                                          .delete_outline_rounded,
-                                                      onPressed: (_) {
-                                                        print(
-                                                            'SlidableActionWidget pressed ...');
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                                child: Material(
-                                                  color: Colors.transparent,
-                                                  child: ListTile(
-                                                    title: Text(
-                                                      'Title',
-                                                      style:,
-                                                    ),
-                                                    subtitle: Text(
-                                                      'Subtitle',
-                                                      style:,
-                                                    tileColor:,
+                                              height: 63,
+                                              decoration:
+                                                  styleManager.boxDecoration,
+                                              child: SingleChildScrollView(
+                                                  child: Text(
+                                                'Genderdfsgdsfgdsfgdsfgdsfgdsfgsdgdfgdsgdsgdfgdgdfgdsfgdfgdgdfgdgdgsdgdfgsgggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg',
+                                                style: styleManager.textStyle,
+                                              )),
+                                            ),
+                                            // Positioned图标，放在TextField的右下角
+                                            Positioned(
+                                              right: 200,
+                                              // 距离右边10个像素
+                                              bottom: 1,
+                                              // 距离底部10个像素
+                                              child: IconButton(
+                                                icon: Icon(
+                                                    Icons.more_horiz_outlined,
+                                                    color: Colors.red),
+                                                onPressed:
+                                                    _onIconClicked, // 图标点击事件
+                                              ),
+                                            ),
+                                          ]))
+                                        ],
+                                      ),
+                                    ].divide(SizedBox(height: 2)),
+                                  ),
+                                ),
+                              ].divide(SizedBox(height: 4)),
+                            ),
+                          ),
+                        ].divide(SizedBox(width: 2)),
+                      ),
+                      //Remark
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              children: [
+                                //Remark Label
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Remark',
+                                      style: styleManager.textStyle,
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  width: double.infinity,
+                                  height: 100,
+                                  decoration: styleManager.boxDecoration,
+                                  child: Slidable(
+                                    endActionPane: ActionPane(
+                                      motion: const ScrollMotion(),
+                                      extentRatio: 0.25,
+                                      children: [
+                                        SlidableAction(
+                                          label: 'Delete',
+                                          backgroundColor:
+                                              styleManager.backgroundColor,
+                                          icon: Icons.delete_outline_rounded,
+                                          onPressed: (_) {
+                                            print(
+                                                'SlidableActionWidget pressed ...');
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: ListTile(
+                                        title: Text(
+                                          'Title',
+                                          style: styleManager.textStyle,
+                                        ),
+                                        subtitle: Text(
+                                          'Subtitle',
+                                          style: styleManager.textStyle,
+                                          /*tileColor:styleManager.color,
                                                     dense: false,
                                                     contentPadding:,
-                                                    shape:,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ].divide(SizedBox(height: 4)),
+                                                    shape:,*/
                                         ),
                                       ),
-                                    ].divide(SizedBox(width: 12)),
+                                    ),
                                   ),
-                                ]
-                                    .divide(SizedBox(height: 18))
-                                    .addToEnd(SizedBox(height: 32)),
-                              ),
-                            )
-
-           ],
-        ),
-      ),
-    )
-          ]
-        )
-       );
+                                ),
+                              ].divide(SizedBox(height: 4)),
+                            ),
+                          ),
+                        ].divide(SizedBox(width: 12)),
+                      ),
+                    ].divide(SizedBox(height: 18))
+                        //.addToEnd(SizedBox(height: 32)),
+                        ),
+                  )
+                ],
+              ),
+            ),
+          )
+        ])));
   }
 
   void safeSetState(Null Function() param0) {}
 
-
+  void _onIconClicked() {}
 }
 
-
-
-
-
-
 //需要修改部分
-
 
 class wrapInMaterialDatePickerTheme extends Widget {
   late BuildContext Context;
@@ -1263,9 +1390,10 @@ class wrapInMaterialDatePickerTheme extends Widget {
     throw UnimplementedError();
   }
 
-
-  wrapInMaterialDatePickerTheme(BuildContext context,Widget child):super()
-   {this.Context=context;this.Child=child;}
+  wrapInMaterialDatePickerTheme(BuildContext context, Widget child) : super() {
+    this.Context = context;
+    this.Child = child;
+  }
 }
 
 class wrapInMaterialTimePickerTheme extends Widget {
@@ -1279,91 +1407,116 @@ class wrapInMaterialTimePickerTheme extends Widget {
     throw UnimplementedError();
   }
 
-
-  wrapInMaterialTimePickerTheme(BuildContext context,Widget child):super()
-  {this.Context=context;this.Child=child;}
+  wrapInMaterialTimePickerTheme(BuildContext context, Widget child) : super() {
+    this.Context = context;
+    this.Child = child;
+  }
 }
 
-class wGFDropdown extends GFDropdown{
+class wGFDropdown extends GFDropdown {
   ChangeNotifier? controller;
-  wGFDropdown({this.controller,Key? key,
-    required super.items,
-    super.icon,
-    super.selectedItemBuilder,
-    super.value,
-    super.hint,
-    super.disabledHint,
-    required super.onChanged,
-    super.onTap,
-    super.elevation = 8,
-    super.style,
-    super.underline,
-    super.iconDisabledColor,
-    super.iconEnabledColor,
-    super.iconSize = 24.0,
-    super.isDense = true,
-    super.isExpanded = false,
-    super.itemHeight = 40,
-    super.focusColor,
-    super.focusNode,
-    super.autofocus = false,
-    super.dropdownColor,
-    super.padding = const EdgeInsets.all(5),
-    super.borderRadius = const BorderRadius.all(Radius.circular(4)),
-    super.border = const BorderSide(
-        color: Colors.transparent, width: 1, style: BorderStyle.solid),
-    super.dropdownButtonColor = GFColors.WHITE});
 
-}
-class styleManager
-{
-  static final TextStyle textStyle=TextStyle(
-    color: Colors.blue,           // 设置文本颜色
-    fontSize: 12,                 // 设置字体大小
-    fontWeight: FontWeight.bold,  // 设置字体粗细
-    fontStyle: FontStyle.italic,  // 设置字体为斜体
-  );
-  static final boxDecoration=BoxDecoration(
-  // 在这里设置装饰属性（如背景颜色、边框等）
-  borderRadius: BorderRadius.circular(12),
-  border: Border.all(color: Colors.grey, width: 2),
-  );
-  static final color=Color(3333);
-}
-class FormFieldController extends ChangeNotifier{
+  wGFDropdown(
+      {this.controller,
+      Key? key,
+      required super.items,
+      super.icon,
+      super.selectedItemBuilder,
+      super.value,
+      super.hint,
+      super.disabledHint,
+      required super.onChanged,
+      super.onTap,
+      super.elevation = 8,
+      super.style,
+      super.underline,
+      super.iconDisabledColor,
+      super.iconEnabledColor,
+      super.iconSize = 24.0,
+      super.isDense = true,
+      super.isExpanded = false,
+      super.itemHeight = 40,
+      super.focusColor,
+      super.focusNode,
+      super.autofocus = false,
+      super.dropdownColor,
+      super.padding = const EdgeInsets.all(5),
+      super.borderRadius = const BorderRadius.all(Radius.circular(4)),
+      super.border = const BorderSide(
+          color: Colors.transparent, width: 1, style: BorderStyle.solid),
+      super.dropdownButtonColor = GFColors.WHITE});
 }
 
+class styleManager {
+  static final TextStyle textStyle = TextStyle(
+    color: Colors.blue, // 设置文本颜色
+    fontSize: 12, // 设置字体大小
+    fontWeight: FontWeight.bold, // 设置字体粗细
+    fontStyle: FontStyle.italic, // 设置字体为斜体
+  );
+  static final boxDecoration = BoxDecoration(
+    // 在这里设置装饰属性（如背景颜色、边框等）
+    borderRadius: BorderRadius.circular(12),
+    border: Border.all(color: Colors.grey, width: 2),
+  );
+  static const Color color = Color(0x33458867);
+  static const Color fillColor = Color(0x33458867);
+  static InputBorder? inputFocusedBorder = const OutlineInputBorder(
+    borderSide: BorderSide(color: Colors.grey),
+  );
+
+  static InputBorder? inputErrorBorder = OutlineInputBorder(
+    borderSide: BorderSide(color: Colors.grey),
+  );
+
+  static InputBorder? inputEnabledBorder = OutlineInputBorder(
+    borderSide: BorderSide(color: Colors.grey),
+  );
+
+  static InputBorder? inputFocusedErrorBorder = OutlineInputBorder(
+    borderSide: BorderSide(color: Colors.grey),
+  );
+
+  static Color? cursorColor = const Color(0x33333333);
+
+  static Color backgroundColor = const Color(0x33333333);
+}
+
+class FormFieldController extends ChangeNotifier {}
 
 extension DivideList on List<Widget> {
-static double? _height,_width;
-static double? get height=>_height;
-static double? get width=>_width;
-static set height(double? value)
-{
-  _height=value;
-}
-static set width(double? value)
-{
-  _width=value;
-}
+  static double? _height, _width;
+
+  static double? get height => _height;
+
+  static double? get width => _width;
+
+  static set height(double? value) {
+    _height = value;
+  }
+
+  static set width(double? value) {
+    _width = value;
+  }
+
   // 在 Column 和 Row 中递归地为子组件添加间隔
   List<Widget> divide(SizedBox sizebox) {
     List<Widget> dividedChildren = [];
-    height=sizebox.height;
-    width=sizebox.width;
+    height = sizebox.height;
+    width = sizebox.width;
     for (int i = 0; i < this.length; i++) {
       Widget child = this[i];
 
       // 如果子组件是 Column，递归处理并添加竖向间隔
       if (child is Column) {
         dividedChildren.add(Column(
-          children: _addVerticalSpacing(child.children),  // 添加竖向间隔
+          children: _addVerticalSpacing(child.children), // 添加竖向间隔
         ));
       }
       // 如果子组件是 Row，递归处理并添加横向间隔
       else if (child is Row) {
         dividedChildren.add(Row(
-          children: _addHorizontalSpacing(child.children),  // 添加横向间隔
+          children: _addHorizontalSpacing(child.children), // 添加横向间隔
         ));
       }
       // 其他 Widget 直接添加
@@ -1387,7 +1540,7 @@ static set width(double? value)
       result.add(children[i]);
 
       if (i < children.length - 1) {
-        result.add(SizedBox(height: height));  // 添加竖向间隔
+        result.add(SizedBox(height: height)); // 添加竖向间隔
       }
     }
     return result;
@@ -1400,16 +1553,36 @@ static set width(double? value)
       result.add(children[i]);
 
       if (i < children.length - 1) {
-        result.add(SizedBox(width: width));  // 添加横向间隔
+        result.add(SizedBox(width: width)); // 添加横向间隔
       }
     }
     return result;
   }
 }
 
+class _dateMask extends TextInputFormatter {
+  final DateFormat format = DateFormat('yyyy-MM-dd');
 
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    String text = newValue.text;
+// 简单的日期格式化逻辑，可以根据需要定制
+    if (text.length == 4 && !text.contains('-')) {
+      text = '${text.substring(0, 4)}-';
+    } else if (text.length == 7 && !text.contains('-')) {
+      text = '${text.substring(0, 7)}-';
+    }
+
+    return TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: text.length),
+    );
+  }
+}
 
 class _model {
+  static TextInputFormatter dateMask = _dateMask();
   static String? assetValue;
 
   static DateTime? datePicked;
@@ -1418,9 +1591,46 @@ class _model {
 
   static FocusNode? dateFocusNode;
 
-  static var dateMask;
+  TextEditingController? textFormController;
+
+  static FormFieldValidator<String>? priceValidator;
+
+  List<TextInputFormatter>? priceInputFormatters;
+
+  static FormFieldValidator<String>? quantityValidator;
+
+  List<TextInputFormatter>? quantityInputFormatters;
+
+  static ChangeNotifier? accountValueController;
+
+  static var accountValue;
+
+  static ChangeNotifier? sessionValueController;
+
+  static var sessionValue;
+
+  static ChangeNotifier? sideValueController;
+
+  static var sideValue;
+
+  static ChangeNotifier? tradeTypeValueController;
+
+  static var tradeTypeValue;
+
+  static ChangeNotifier? entryConditionValueController;
+
+  static var entryConditionValue;
+
+  static var moodValue;
+
+  static ChangeNotifier? moodValueController;
+
+  static ChangeNotifier? reasonValueController;
+
+  static var reasonValue;
 
   static FormFieldController? get assetValueController => null;
 
-  static FormFieldValidator<String>? dateTextControllerValidator(BuildContext context) {}
+  static FormFieldValidator<String>? dateTextControllerValidator(
+      BuildContext context) {}
 }

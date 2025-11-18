@@ -7,9 +7,10 @@ import 'package:brainbox/pages/notes_by_category.dart';
 import 'package:brainbox/pages/single_note.dart';
 import 'package:brainbox/pages/todos.dart';
 import 'package:brainbox/pages/update_note.dart';
-import 'package:brainbox/pages/create_Transaction1.d';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+import '../pages/create_Transaction.dart';
 
 class AppRouter {
   static final router = GoRouter(
@@ -96,7 +97,7 @@ class AppRouter {
         path: "/createTransaction", // Corrected path with parameter
         builder: (context, state) {
 //          final Note note = state.extra as Note;
-          return create_Transaction();
+          return CreateTransactionPage(isNewCategory: false,);
         },
       ),
     ],
