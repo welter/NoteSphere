@@ -13,6 +13,7 @@ import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:expandable/expandable.dart';
 
 class CreateTransactionPage extends StatefulWidget {
   final bool isNewCategory;
@@ -1271,6 +1272,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                               decoration:
                                                   styleManager.boxDecoration,
                                               child: SingleChildScrollView(
+                                                padding: EdgeInsets.zero,
                                                   child: Text(
                                                 'Genderdfsgdsfgdsfgdsfgdsfgdsfgsdgdfgdsgdsgdfgdgdfgdsfgdfgdgdfgdgdgsdgdfgsgggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg',
                                                 style: styleManager.textStyle,
