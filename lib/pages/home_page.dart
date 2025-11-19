@@ -107,12 +107,12 @@ class _HomePageState extends State<HomePage> {
                     child:GestureDetector(
                     //go to todo page using gorouter
                     onTap: () {
-                      AppRouter.router.push("/todos");
+                      AppRouter.router.push("/test");
                     },
                     child: NotesTodoCard(
-                      title: 'To-Do',
-                      description: "${allToDos.length.toString()} Tasks",
-                      icon: Icons.today_outlined,
+                      title: '测试',
+                      description: "${allToDos.length.toString()} Test",
+                      icon: Icons.check,
                     ),
                   ),
                   ),

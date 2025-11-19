@@ -1263,7 +1263,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                       ),
                                       //Reason Text
                                       Row(
-                                        children: [
+/*welter                                        children: [
                                           Expanded(
                                               child: Stack(children: [
                                             Container(
@@ -1293,7 +1293,69 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                               ),
                                             ),
                                           ]))
-                                        ],
+                                        ],welter因使用expandable注释掉*/
+
+                                      //welter add begin 2025-1119
+                                          children:[
+                                            ExpandableTheme(
+                                              data:
+                                              const ExpandableThemeData(
+                                                iconColor: Colors.blue, //展开折叠图标的颜色
+                                                useInkWell: true, //点击是否有水波纹的效果
+                                              ),
+                                              child:
+                                              ScrollOnExpand(
+                                                scrollOnExpand: true,
+                                                scrollOnCollapse: false,
+                                                child:
+                                                ExpandablePanel(
+                                                  theme: const ExpandableThemeData(
+                                                    headerAlignment: ExpandablePanelHeaderAlignment.center,
+                                                    tapBodyToCollapse: true,
+                                                  ),
+                                                  //头部widge
+                                                  header: Padding(
+                                                      padding: EdgeInsets.all(10),
+                                                      child: Text(
+                                                        "ExpandablePanel",
+                                                        style: Theme.of(context).textTheme.bodyMedium,
+                                                      )),
+                                                  //简洁性质的内容显示出全部的部分，或者是开头部分，这边是显示两行，超过的...
+                                                  collapsed: const Text(
+                                                    //loremIpsum,
+                                                    '',
+                                                    softWrap: true,
+                                                    maxLines: 2,
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                  //展开要显示的内容
+                                                  expanded: const Text(
+                                                      '张九龄：感遇四首之一孤鸿海上来，池潢不敢顾。 侧见双翠鸟，巢在三珠树。 矫矫珍木巅，得无金丸惧。 美服患人指，高明逼神恶。 今我游冥冥，弋者何所慕。张九龄：感遇四首之二兰叶春张九龄：感遇四首之一孤鸿海上来，池潢不敢顾。 侧见双翠鸟，巢在三珠树。 矫矫珍木巅，得无金丸惧。 美服患人指，高明逼神恶。 今我游冥冥，弋者何所慕。张九龄：感遇四首之二兰叶春张九龄：感遇四首之一孤鸿海上来，池潢不敢顾。 侧见双翠鸟，巢在三珠树。 矫矫珍木巅，得无金丸惧。 美服患人指，高明逼神恶。 今我游冥冥，弋者何所慕。张九龄：感遇四首之二兰叶春张九龄：感遇四首之一孤鸿海上来，池潢不敢顾。 侧见双翠鸟，巢在三珠树。 矫矫珍木巅，得无金丸惧。 美服患人指，高明逼神恶。 今我游冥冥，弋者何所慕。张九龄：感遇四首之二兰叶春'),
+
+                                                  //创建展开后的内widget
+                                                  builder: (_, collapsed, expanded) {
+                                                    return Padding(
+                                                      padding:
+                                                      const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                                                      child: Expandable(
+                                                        collapsed: collapsed,
+                                                        expanded: expanded,
+                                                        //下面的不起作用
+                                                        // theme: const ExpandableThemeData(
+                                                        //     crossFadePoint: 0, iconColor: Colors.pink),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              )
+                                          )
+                ]
+//welter add end
+
+
+
+
+
                                       ),
                                     ].divide(SizedBox(height: 2)),
                                   ),
@@ -1506,16 +1568,17 @@ extension DivideList on List<Widget> {
     List<Widget> dividedChildren = [];
     height = sizebox.height;
     width = sizebox.width;
-    for (int i = 0; i < this.length; i++) {
+    // 如果子组件是 Column，递归处理并添加竖向间隔
+     for (int i = 0; i < this.length; i++) {
       Widget child = this[i];
 
-      // 如果子组件是 Column，递归处理并添加竖向间隔
+
       if (child is Column) {
         dividedChildren.add(Column(
           children: _addVerticalSpacing(child.children), // 添加竖向间隔
         ));
       }
-      // 如果子组件是 Row，递归处理并添加横向间隔
+       //如果子组件是 Row，递归处理并添加横向间隔
       else if (child is Row) {
         dividedChildren.add(Row(
           children: _addHorizontalSpacing(child.children), // 添加横向间隔
@@ -1527,11 +1590,12 @@ extension DivideList on List<Widget> {
       }
 
       // 在子组件之间添加竖向间隔
-      if (i < this.length - 1) {
+      if (((this is Column)|| (this is Row)) && (i < this.length - 1)) {
         dividedChildren.add(SizedBox(height: height));
       }
-    }
+      //welter end
 
+    }
     return dividedChildren;
   }
 

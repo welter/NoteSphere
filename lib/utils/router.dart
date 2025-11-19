@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../pages/create_Transaction.dart';
+import '../pages/test.dart';
 
 class AppRouter {
   static final router = GoRouter(
@@ -34,10 +35,10 @@ class AppRouter {
         },
       ),
       GoRoute(
-        name: "todos",
-        path: '/todos',
+        name: "test",
+        path: '/test',
         builder: (context, state) {
-          return const ToDoPage();
+          return const TestPage();
         },
       ),
 
