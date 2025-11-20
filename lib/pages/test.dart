@@ -7,7 +7,7 @@ import 'package:brainbox/utils/text_styles.dart';
 import 'package:brainbox/widgets/bottom_sheet.dart';
 import 'package:brainbox/widgets/notes_card.dart';
 import 'package:flutter/material.dart';
-
+import 'package:expandable/expandable.dart';
 class TestPage extends StatefulWidget {
   const TestPage({super.key});
 
@@ -73,62 +73,56 @@ class _TestPageState extends State<TestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      body: Padding(
-        padding: const EdgeInsets.all(
-          AppConstants.kDefaultPadding,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Notes',
-              style: AppTextStyles.appTitle,
-            ),
-            const SizedBox(height: 30),
-            allNotes.isEmpty
-                ? SizedBox(
-              height: MediaQuery.of(context).size.height * 0.5,
-              child: Center(
-                child: Text(
-                  "No notes available , click on the + button to add a new note",
-                  style: TextStyle(
-                    color: AppColors.kWhiteColor.withOpacity(0.7),
-                    fontSize: 20,
-                  ),
-                  textAlign: TextAlign.center,
+      body:
+        ExpandableNotifier(  // <-- Provides ExpandableController to its children
+          child:
+          ScrollOnExpand(
+              child:
+          Column(
+            children: [Text('333')
+              ,
+              Expandable(           // <-- Driven by ExpandableController from ExpandableNotifier
+                collapsed: ExpandableButton(  // <-- Expands when tapped on the cover photo
+                  child: Text('111',style: TextStyle(
+                    fontSize: 28,
+                    color: Colors.green,
+                    decoration: TextDecoration.underline,
+                    decorationStyle: TextDecorationStyle.wavy,
+                    decorationThickness: 1,
+                  )),
+                ),
+                expanded: Column(
+                    children: [
+                      Text('222',style: TextStyle(
+                        fontSize: 28,
+                        color: Colors.blueAccent,
+                        decoration: TextDecoration.underline,
+                        decorationStyle: TextDecorationStyle.wavy,
+                        decorationThickness: 1,
+                      )),
+                      ExpandableButton(       // <-- Collapses when tapped on
+                        child: Text("Back",style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.redAccent,
+                          decoration: TextDecoration.underline,
+                          decorationStyle: TextDecorationStyle.wavy,
+                          decorationThickness: 1,
+                        )),
+                      ),
+                    ]
                 ),
               ),
-            )
-                : GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate:
-              const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: AppConstants.kDefaultPadding,
-                mainAxisSpacing: AppConstants.kDefaultPadding,
-                childAspectRatio: 6 / 4,
-              ),
-              itemCount: notesWithCategory.length,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {
-                    AppRouter.router.push(
-                      "/category",
-                      extra: notesWithCategory.keys.elementAt(index),
-                    );
-                  },
-                  child: NotesCard(
-                    noteCategory: notesWithCategory.keys.elementAt(index),
-                    noOfNotes:
-                    notesWithCategory.values.elementAt(index).length,
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        )
+        )
+//welter add end
+
+
+
+
+
+
     );
   }
 }
