@@ -69,54 +69,131 @@ class _TestPageState extends State<TestPage> {
     });
   }
 
+
+
+  void _showCustomDialog() {
+  showDialog(
+  context: context,
+  builder: (BuildContext context) {
+  return Dialog(
+  shape: RoundedRectangleBorder(  // 圆角边框
+  borderRadius: BorderRadius.circular(20.0),
+  ),
+  elevation: 10,  // 阴影效果
+  backgroundColor: Colors.white,
+  child: Container(height:600,
+  padding: const EdgeInsets.all(20),
+  child: Expanded(child:
+  Column(
+  mainAxisSize: MainAxisSize.min,
+  children: [
+    SingleChildScrollView(
+    child:
+        Container(
+          height: 400,
+    child:
+    TextFormField(
+      //controller:
+     // _model().textFormController,
+      expands: true,
+      maxLines: null,
+      focusNode: null,
+      autofocus: true,
+      decoration: InputDecoration(
+        labelText: 'Quantity*',
+        //labelStyle: styleManager.textStyle,
+        //hintStyle: styleManager.textStyle,
+        //errorStyle: styleManager.textStyle,
+        //enabledBorder:
+        //styleManager.inputEnabledBorder,
+        //focusedBorder:
+        //styleManager.inputFocusedBorder,
+        //errorBorder:
+        //styleManager.inputErrorBorder,
+        //focusedErrorBorder: styleManager
+        //    .inputFocusedErrorBorder,
+        filled: true,
+        //isCollapsed: true,
+        fillColor: Colors.blueAccent,
+      ),
+      style: TextStyle(fontSize: 16, color: Colors.yellow),//文字大小、颜色,
+      //cursorColor: styleManager.cursorColor,
+      //validator: _model.quantityValidator,
+      //inputFormatters:
+      //_model().quantityInputFormatters,
+    ))),
+  //const Icon(Icons.warning, size: 50, color: Colors.amber),  // 警告图标
+  const SizedBox(height: 20),
+//  const Text(
+ // '自定义弹窗',
+ // style: TextStyle(
+ // fontSize: 22,
+ // fontWeight: FontWeight.bold,
+ // ),
+ // ),
+  const SizedBox(height: 15),
+/*  const Text(
+  '这是一个完全自定义的弹窗，可以包含任何Widget',
+  textAlign: TextAlign.center,
+  ),*/
+  const SizedBox(height: 25),
+  Row(
+  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  children: [
+  TextButton(
+  style: TextButton.styleFrom(
+  backgroundColor: Colors.grey[200],
+  shape: RoundedRectangleBorder(
+  borderRadius: BorderRadius.circular(10),
+  ),
+  ),
+  onPressed: () => Navigator.pop(context),  // 关闭弹框
+  child: const Text('关闭'),
+  ),
+  TextButton(
+  style: TextButton.styleFrom(
+  backgroundColor: Colors.blue,
+  foregroundColor: Colors.white,
+  shape: RoundedRectangleBorder(
+  borderRadius: BorderRadius.circular(10),
+  ),
+  ),
+  onPressed: () {
+  Navigator.pop(context);
+  ScaffoldMessenger.of(context).showSnackBar(
+  const SnackBar(content: Text('操作已执行')),
+  );
+  },
+  child: const Text('确定'),
+  ),
+  ],
+  ),
+  ],
+  ),
+  )),
+  );
+  },
+  );
+  }
+
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 
       body:
-        ExpandableNotifier(  // <-- Provides ExpandableController to its children
-          child:
-          ScrollOnExpand(
-              child:
-          Column(
-            children: [Text('333')
-              ,
-              Expandable(           // <-- Driven by ExpandableController from ExpandableNotifier
-                collapsed: ExpandableButton(  // <-- Expands when tapped on the cover photo
-                  child: Text('111',style: TextStyle(
-                    fontSize: 28,
-                    color: Colors.green,
-                    decoration: TextDecoration.underline,
-                    decorationStyle: TextDecorationStyle.wavy,
-                    decorationThickness: 1,
-                  )),
-                ),
-                expanded: Column(
-                    children: [
-                      Text('222',style: TextStyle(
-                        fontSize: 28,
-                        color: Colors.blueAccent,
-                        decoration: TextDecoration.underline,
-                        decorationStyle: TextDecorationStyle.wavy,
-                        decorationThickness: 1,
-                      )),
-                      ExpandableButton(       // <-- Collapses when tapped on
-                        child: Text("Back",style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.redAccent,
-                          decoration: TextDecoration.underline,
-                          decorationStyle: TextDecorationStyle.wavy,
-                          decorationThickness: 1,
-                        )),
-                      ),
-                    ]
-                ),
-              ),
-            ],
-          ),
-        )
-        )
-//welter add end
+    Center(
+    child: ElevatedButton(
+  onPressed: _showCustomDialog,
+  style: ElevatedButton.styleFrom(backgroundColor: Colors.purple),
+  child: const Text('显示自定义弹窗'),
+  ),
+  ),
 
 
 

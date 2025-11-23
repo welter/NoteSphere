@@ -6,7 +6,8 @@ import 'package:brainbox/utils/theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
-
+import 'package:get/get.dart';
+import 'langs/messages.dart';
 void main() async {
   // Initialize Hive
   await Hive.initFlutter();
@@ -18,7 +19,10 @@ void main() async {
   // Open Hive box
   await Hive.openBox('notes');
   await Hive.openBox('todos');
-
+  // 在初始化时强制同步 Get.locale
+  if (Get.locale == null) {
+    Get.updateLocale(Locale('zh', 'CN')); // 确保初始化时语言为中文
+  }
   runApp(const MyApp());
 }
 
@@ -30,7 +34,7 @@ class MyApp extends StatelessWidget {
     return ToDoData(
       todos: [],
       onTodosChanged: () {},
-      child: MaterialApp.router(
+      child: GetMaterialApp.router(
         title: 'Notes',
         debugShowCheckedModeBanner: false,
         theme: ThemeClass.darkTheme.copyWith(
@@ -38,7 +42,12 @@ class MyApp extends StatelessWidget {
             Theme.of(context).textTheme,
           ),
         ),
-        routerConfig: AppRouter.router,
+          translations:Messages(),
+          locale:  Get.locale,
+        fallbackLocale: Locale('en', 'US'),
+        routerDelegate: AppRouter.router.routerDelegate,
+        routeInformationParser: AppRouter.router.routeInformationParser,
+        routeInformationProvider: AppRouter.router.routeInformationProvider,
       ),
     );
   }

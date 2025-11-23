@@ -14,6 +14,7 @@ import 'package:uuid/uuid.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:expandable/expandable.dart';
+import 'package:get/get.dart';
 
 class CreateTransactionPage extends StatefulWidget {
   final bool isNewCategory;
@@ -33,7 +34,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
   final TextEditingController _noteContentController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
   late String _date;
-  String category = 'Work';
+  String category = 'Work'.tr;
   List<String> categories = [];
 
   @override
@@ -62,6 +63,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
   @override
   Widget build(BuildContext context) {
     print("dateis:" + _date.toString());
+    String s='hello'.tr;
     bool _showAssetDropdown = false;
     bool _showAccountDropdown = false;
     bool _showSideDropdown = false;
@@ -69,6 +71,8 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
     bool _showTradeTypeDropdown = false;
     bool _showEntryConditionDropdown = false;
     bool _showMoodDropdown = false;
+    print(Get.locale);
+    print('CreateTransactionPage local:'+Localizations.localeOf(context).toString());
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -101,7 +105,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                 Row(
                                   children: [
                                     Text(
-                                      'Asset*',
+                                      'Asset*'.tr,
                                       style: styleManager.textStyle,
                                     ),
                                   ],
@@ -114,24 +118,27 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                         width: double.infinity,
                                         height: 48,
                                         decoration: styleManager.boxDecoration,
-                                        child: _showAssetDropdown
-                                            ? //welter
-                                            Expanded(
-                                                child: wGFDropdown(
+                                        child: //true
+                                            //? //welter
+                                            //Expanded(
+                                                //child:
+                                                  wGFDropdown(
+                                                  isExpanded: true,
                                                   controller: _model
                                                       .assetValueController,
                                                   items: [
                                                     'Insurance Provider 1',
                                                     'Insurance Provider 2',
                                                     'Insurance Provider 3'
-                                                  ].map<
-                                                          DropdownMenuItem<
-                                                              String>>(
+                                                  ].map<DropdownMenuItem<String>>(
                                                       (String value) {
                                                     return DropdownMenuItem<
                                                         String>(
                                                       value: value,
-                                                      child: Text(value),
+                                                      child: Text(
+                                                          value,
+                                                        style: styleManager.textStyle,
+                                                      ),
                                                     );
                                                   }).toList(),
                                                   onChanged: (val) {
@@ -146,7 +153,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                                   hint: Text('Select one...'),
                                                   icon: Icon(
                                                       Icons.arrow_drop_down,
-                                                      color: Colors.black),
+                                                      color: Colors.green),
                                                   iconEnabledColor:
                                                       Color(0x14324),
                                                   elevation: 2,
@@ -163,11 +170,11 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                                       isMultiSelect: false,
                                                         searchHintText:    */
                                                 ),
-                                              )
-                                            : SizedBox(
-                                                width: 10,
-                                                height: 10,
-                                              ), //welter
+                                            //  )
+                                            //: SizedBox(
+                                            //    width: 10,
+                                            //    height: 10,
+                                            //  ), //welter
                                       ),
                                     ),
                                   ],
@@ -186,7 +193,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                 //Entry Date Label
                                 Row(
                                   children: [
-                                    Text('Entry Date*',
+                                    Text('Entry Date*'.tr,
                                         style: styleManager.textStyle),
                                   ],
                                 ),
@@ -261,7 +268,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                                 TextCapitalization.words,
                                             obscureText: false,
                                             decoration: InputDecoration(
-                                              labelText: 'EntryDate*',
+                                              labelText: 'Entry Date*'.tr,
                                               labelStyle:
                                                   styleManager.textStyle,
                                               hintStyle: styleManager.textStyle,
@@ -338,7 +345,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                 Row(
                                   children: [
                                     Text(
-                                      'Price*',
+                                      'Price*'.tr,
                                       style: styleManager.textStyle,
                                     ),
                                   ],
@@ -357,7 +364,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                           focusNode: null,
                                           autofocus: true,
                                           decoration: InputDecoration(
-                                            labelText: 'Price*',
+                                            labelText: 'Price*'.tr,
                                             labelStyle: styleManager.textStyle,
                                             hintStyle: styleManager.textStyle,
                                             errorStyle: styleManager.textStyle,
@@ -393,7 +400,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                 Row(
                                   children: [
                                     Text(
-                                      'Quantity*',
+                                      'Quantity*'.tr,
                                       style: styleManager.textStyle,
                                     ),
                                   ],
@@ -412,7 +419,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                           focusNode: null,
                                           autofocus: true,
                                           decoration: InputDecoration(
-                                            labelText: 'Quantity*',
+                                            labelText: 'Quantity*'.tr,
                                             labelStyle: styleManager.textStyle,
                                             hintStyle: styleManager.textStyle,
                                             errorStyle: styleManager.textStyle,
@@ -453,7 +460,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                 Row(
                                   children: [
                                     Text(
-                                      'Account*',
+                                      'Account*'.tr,
                                       style: styleManager.textStyle,
                                     ),
                                   ],
@@ -535,7 +542,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                 Row(
                                   children: [
                                     Text(
-                                      'Session*',
+                                      'Session*'.tr,
                                       style: styleManager.textStyle,
                                     ),
                                   ],
@@ -622,7 +629,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                 Row(
                                   children: [
                                     Text(
-                                      'Fee',
+                                      'Fee'.tr,
                                       style: styleManager.textStyle,
                                     ),
                                   ],
@@ -641,7 +648,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                           focusNode: null,
                                           autofocus: true,
                                           decoration: InputDecoration(
-                                            labelText: 'Fee',
+                                            labelText: 'Fee'.tr,
                                             labelStyle: styleManager.textStyle,
                                             hintStyle: styleManager.textStyle,
                                             errorStyle: styleManager.textStyle,
@@ -677,7 +684,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                 Row(
                                   children: [
                                     Text(
-                                      'Tax',
+                                      'Tax'.tr,
                                       style: styleManager.textStyle,
                                     ),
                                   ],
@@ -696,7 +703,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                           focusNode: null,
                                           autofocus: true,
                                           decoration: InputDecoration(
-                                            labelText: 'Tax',
+                                            labelText: 'Tax'.tr,
                                             labelStyle: styleManager.textStyle,
                                             hintStyle: styleManager.textStyle,
                                             errorStyle: styleManager.textStyle,
@@ -737,7 +744,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                 Row(
                                   children: [
                                     Text(
-                                      'StopLoss',
+                                      'StopLoss'.tr,
                                       style: styleManager.textStyle,
                                     ),
                                   ],
@@ -756,7 +763,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                           focusNode: null,
                                           autofocus: true,
                                           decoration: InputDecoration(
-                                            labelText: 'StopLoss',
+                                            labelText: 'StopLoss'.tr,
                                             labelStyle: styleManager.textStyle,
                                             hintStyle: styleManager.textStyle,
                                             errorStyle: styleManager.textStyle,
@@ -792,7 +799,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                 Row(
                                   children: [
                                     Text(
-                                      'ExitPrice',
+                                      'ExitPrice'.tr,
                                       style: styleManager.textStyle,
                                     ),
                                   ],
@@ -811,7 +818,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                           focusNode: null,
                                           autofocus: true,
                                           decoration: InputDecoration(
-                                            labelText: 'ExitPrice',
+                                            labelText: 'ExitPrice'.tr,
                                             labelStyle: styleManager.textStyle,
                                             hintStyle: styleManager.textStyle,
                                             errorStyle: styleManager.textStyle,
@@ -852,7 +859,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                 Row(
                                   children: [
                                     Text(
-                                      'Side*',
+                                      'Side*'.tr,
                                       style: styleManager.textStyle,
                                     ),
                                   ],
@@ -934,7 +941,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                 Row(
                                   children: [
                                     Text(
-                                      'TradeType',
+                                      'TradeType'.tr,
                                       style: styleManager.textStyle,
                                     ),
                                   ],
@@ -1021,7 +1028,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                 Row(
                                   children: [
                                     Text(
-                                      'EntryCondition',
+                                      'EntryCondition'.tr,
                                       style: styleManager.textStyle,
                                     ),
                                   ],
@@ -1104,7 +1111,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                 Row(
                                   children: [
                                     Text(
-                                      'Mood',
+                                      'Mood'.tr,
                                       style: styleManager.textStyle,
                                     ),
                                   ],
@@ -1191,7 +1198,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Text(
-                                      'Reason',
+                                      'Reason'.tr,
                                       style: styleManager.textStyle,
                                     ),
                                   ],
@@ -1237,7 +1244,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                                       searchHintTextStyle:,
                                                       searchTextStyle:,
                                                       textStyle:,*/
-                                                hint: Text('Select one...'),
+                                                hint: Text('Select one...'.tr),
                                                 icon: const Icon(
                                                     Icons.arrow_drop_down,
                                                     color: Colors.black),
@@ -1326,7 +1333,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                                               focusNode: null,
                                                               autofocus: true,
                                                               decoration: InputDecoration(
-                                                                labelText: 'Quantity*',
+                                                                labelText: 'Quantity*'.tr,
                                                                 labelStyle: styleManager.textStyle,
                                                                 hintStyle: styleManager.textStyle,
                                                                 errorStyle: styleManager.textStyle,
@@ -1349,7 +1356,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                                             ),
                                                             ExpandableButton(       // <-- Collapses when tapped on
                                                               child:
-                                                              Text("Back",style: TextStyle(
+                                                              Text("Back".tr,style: TextStyle(
                                                                 fontSize: 12,
                                                                 color: Colors.redAccent,
                                                                 decoration: TextDecoration.underline,
@@ -1391,7 +1398,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                 Row(
                                   children: [
                                     Text(
-                                      'Remark',
+                                      'Remark'.tr,
                                       style: styleManager.textStyle,
                                     ),
                                   ],
@@ -1406,7 +1413,7 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
                                       extentRatio: 0.25,
                                       children: [
                                         SlidableAction(
-                                          label: 'Delete',
+                                          label: 'Delete'.tr,
                                           backgroundColor:
                                               styleManager.backgroundColor,
                                           icon: Icons.delete_outline_rounded,
@@ -1493,38 +1500,80 @@ class wrapInMaterialTimePickerTheme extends Widget {
   }
 }
 
-class wGFDropdown extends GFDropdown {
+class wGFDropdown<T> extends GFDropdown {
   ChangeNotifier? controller;
 
-  wGFDropdown(
-      {this.controller,
-      Key? key,
-      required super.items,
-      super.icon,
-      super.selectedItemBuilder,
-      super.value,
-      super.hint,
-      super.disabledHint,
-      required super.onChanged,
-      super.onTap,
-      super.elevation = 8,
-      super.style,
-      super.underline,
-      super.iconDisabledColor,
-      super.iconEnabledColor,
-      super.iconSize = 24.0,
-      super.isDense = true,
-      super.isExpanded = false,
-      super.itemHeight = 40,
-      super.focusColor,
-      super.focusNode,
-      super.autofocus = false,
-      super.dropdownColor,
-      super.padding = const EdgeInsets.all(5),
-      super.borderRadius = const BorderRadius.all(Radius.circular(4)),
-      super.border = const BorderSide(
-          color: Colors.transparent, width: 1, style: BorderStyle.solid),
-      super.dropdownButtonColor = GFColors.WHITE});
+  wGFDropdown({
+    Key? key,
+    required List<T> items,
+    Widget? icon,
+    List<Widget> Function(BuildContext)? selectedItemBuilder,
+    T? value,
+    Widget? hint,
+    Widget? disabledHint,
+    required ValueChanged<dynamic>? onChanged,
+    VoidCallback? onTap,
+    int elevation = 0,          // ⭐ 默认值
+    TextStyle? style,
+    Widget? underline,
+    Color? iconDisabledColor,
+    Color? iconEnabledColor,
+    double iconSize = 24.0,     // ⭐ 默认值
+    bool isDense = false,       // ⭐ 默认值
+    bool isExpanded = false,    // ⭐ 默认值
+    double itemHeight = 40.0,   // ⭐ 默认值
+    Color? focusColor,
+    FocusNode? focusNode,
+    bool autofocus = false,     // ⭐ 默认值
+    Color? dropdownColor,
+    String? Function(T?)? validator,
+    EdgeInsetsGeometry? padding,
+    BorderRadius? borderRadius,
+    BoxBorder? border,
+    Color? dropdownButtonColor,
+    this.controller,
+  }) : super(
+    key: key,
+    value: value,
+    isExpanded: isExpanded,
+    style: style,
+    dropdownColor: dropdownColor,
+    elevation: elevation!,
+    icon: icon,
+    iconSize: iconSize,
+    underline: underline,
+    autofocus: autofocus,
+    focusNode: focusNode,
+    focusColor: focusColor,
+    itemHeight: itemHeight,
+    hint:hint,
+    items: _buildItems(items.cast<DropdownMenuItem<dynamic>>()),
+    onChanged: onChanged,
+  );
+  /// ⭐ 你可以在这里任意处理 item，例如翻译、过滤、排序
+  static List<DropdownMenuItem<T>>? _buildItems<T>(
+      List<DropdownMenuItem<T>>? items) {
+    String s='1111111';
+    if (items?.isNotEmpty == true) {
+      return items!.map((item) {
+        if (item.value is String) String s= item.value.toString().tr;
+      return DropdownMenuItem<T>(
+        value: item.value,
+        enabled: item.enabled,
+        onTap: item.onTap,
+        alignment:item.alignment,
+        key:item.key,
+        child: Builder(
+          builder: (ctx) {
+            print("Get.locale = ${Get.locale}");
+            print("ctx locale = ${Localizations.localeOf(ctx)}");
+            return Text(s);
+          },
+        ),
+      );
+    }).toList();
+    } else return null;
+  }
 }
 
 class styleManager {

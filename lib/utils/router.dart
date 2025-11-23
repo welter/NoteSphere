@@ -12,7 +12,19 @@ import 'package:go_router/go_router.dart';
 
 import '../pages/create_Transaction.dart';
 import '../pages/test.dart';
+class AppWrapper extends StatelessWidget {
+  final Widget child;
+  AppWrapper({required this.child});
 
+  @override
+  Widget build(BuildContext context) {
+    return Builder(
+      builder: (ctx) {
+        return child;
+      },
+    );
+  }
+}
 class AppRouter {
   static final router = GoRouter(
     navigatorKey: GlobalKey<NavigatorState>(),
@@ -24,21 +36,24 @@ class AppRouter {
         name: "home",
         path: '/',
         builder: (context, state) {
-          return HomePage();
+          print('router local:'+Localizations.localeOf(context).toString());
+          return AppWrapper(child: HomePage());
         },
       ),
       GoRoute(
         name: "notes",
         path: '/notes',
         builder: (context, state) {
-          return const NotesPage();
+          print('router local:'+Localizations.localeOf(context).toString());
+          return AppWrapper(child: NotesPage());
         },
       ),
       GoRoute(
         name: "test",
         path: '/test',
         builder: (context, state) {
-          return const TestPage();
+          print('router local:'+Localizations.localeOf(context).toString());
+          return AppWrapper(child: TestPage());
         },
       ),
 
@@ -47,10 +62,10 @@ class AppRouter {
         path: "/create-note",
         builder: (context, state) {
           final isNewCategory = state.extra as bool;
-
-          return CreateNotePage(
+          print('router local:'+Localizations.localeOf(context).toString());
+          return AppWrapper(child: CreateNotePage(
             isNewCategory: isNewCategory,
-          );
+          ));
         },
       ),
 
@@ -59,9 +74,10 @@ class AppRouter {
         path: "/category", // Corrected path with parameter
         builder: (context, state) {
           final String category = state.extra as String;
-          return NotesByCategoryPage(
+          print('router local:'+Localizations.localeOf(context).toString());
+          return AppWrapper(child: NotesByCategoryPage(
             category: category,
-          );
+          ));
         },
       ),
 
@@ -70,9 +86,10 @@ class AppRouter {
         path: "/edit-note", // Corrected path with parameter
         builder: (context, state) {
           final Note note = state.extra as Note;
-          return UpdateNotePage(
+          print('router local:'+Localizations.localeOf(context).toString());
+          return AppWrapper(child: UpdateNotePage(
             note: note,
-          );
+          ));
         },
       ),
 
@@ -81,7 +98,8 @@ class AppRouter {
         path: "/single-note", // Corrected path with parameter
         builder: (context, state) {
           final Note note = state.extra as Note;
-          return SingleNotePage(note: note);
+          print('router local:'+Localizations.localeOf(context).toString());
+          return AppWrapper(child: SingleNotePage(note: note));
         },
       ),
 
@@ -98,9 +116,11 @@ class AppRouter {
         path: "/createTransaction", // Corrected path with parameter
         builder: (context, state) {
 //          final Note note = state.extra as Note;
-          return CreateTransactionPage(isNewCategory: false,);
+          print('router local:'+Localizations.localeOf(context).toString());
+          return AppWrapper(child: CreateTransactionPage(isNewCategory: false,));
         },
       ),
     ],
+
   );
 }
