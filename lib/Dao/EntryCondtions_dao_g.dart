@@ -17,13 +17,18 @@ class EntryConditionDao extends DatabaseAccessor<TradingDatabase> with _$EntryCo
   EntryConditionDao(this.db) : super(db);
 
   // 插入进场状态
-  Future<int> insertEntryConditionEntryCondition(EntryConditionsCompanion entryCondition) {
+  Future<int> insertEntryCondition(EntryCondition entryCondition) {
     return into(db.entryConditions).insert(entryCondition);
   }
 
   // 获取所有进场状态
   Future<List<EntryCondition>> getAllEntryConditions() {
     return select(db.entryConditions).get();
+  }
+
+  // 更新进场状态
+  Future<bool> updateEntryCondition(EntryCondition entryCondition) {
+    return update(db.entryConditions).replace(entryCondition);
   }
 
   // 根据ID获取进场状态

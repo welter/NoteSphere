@@ -2,7 +2,7 @@ import 'package:brainbox/helpers/show_snackbar.dart';
 import 'package:brainbox/models/todo_model.dart';
 import 'package:brainbox/pages/todo_data_inharited.dart';
 import 'package:brainbox/services/todo_service.dart';
-import 'package:brainbox/utils/router.dart';
+import 'package:get/get.dart';
 import 'package:brainbox/widgets/todo_card.dart';
 import 'package:flutter/material.dart';
 
@@ -34,7 +34,7 @@ class _CompletedTabState extends State<CompletedTab> {
         widget.completeToDos.remove(toDo);
       });
       //go to todos tab
-      AppRouter.router.go("/todos");
+      Get.offNamed("/todos");
 
       //show snackbar
     } catch (e) {

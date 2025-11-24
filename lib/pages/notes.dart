@@ -2,7 +2,8 @@ import 'package:brainbox/models/note_model.dart';
 import 'package:brainbox/services/note_service.dart';
 import 'package:brainbox/utils/colors.dart';
 import 'package:brainbox/utils/constants.dart';
-import 'package:brainbox/utils/router.dart';
+import 'package:brainbox/utils/getxRouter.dart';
+import 'package:get/get.dart';
 import 'package:brainbox/utils/text_styles.dart';
 import 'package:brainbox/widgets/bottom_sheet.dart';
 import 'package:brainbox/widgets/notes_card.dart';
@@ -29,11 +30,17 @@ class _NotesPageState extends State<NotesPage> {
         return CategoryInputBottomSheet(
           onNewNote: () {
             Navigator.pop(context);
-            AppRouter.router.push("/create-note", extra: false);
+             Get.toNamed(
+              "/create-note",
+              arguments: false,
+            );
           },
           onNewCategory: () {
             Navigator.pop(context);
-            AppRouter.router.push("/create-note", extra: true);
+            Get.toNamed(
+            "/create-note",
+            arguments: true,
+            );
           },
         );
       },
@@ -77,8 +84,8 @@ class _NotesPageState extends State<NotesPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            AppRouter.router.go(
-              "/",
+            Get.toNamed(
+              "/"
             );
           },
         ),
@@ -140,9 +147,9 @@ class _NotesPageState extends State<NotesPage> {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
-                          AppRouter.router.push(
+                          Get.toNamed(
                             "/category",
-                            extra: notesWithCategory.keys.elementAt(index),
+                            arguments: notesWithCategory.keys.elementAt(index),
                           );
                         },
                         child: NotesCard(

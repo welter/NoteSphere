@@ -16,13 +16,18 @@ class CurrencysDao extends DatabaseAccessor<TradingDatabase> with _$CurrencysDao
   CurrencysDao(this.db) : super(db);
 
   // 插入账户类型
-  Future<int> insertCurrency(CurrencysCompanion currency) {
+  Future<int> insertCurrency(Currency currency) {
     return into(db.currencys).insert(currency);
   }
 
   // 获取所有账户类型
   Future<List<Currency>> getAllCurrencys() {
     return select(db.currencys).get();
+  }
+
+  // 更新股票（标的）信息
+  Future<bool> updateCurrency(Currency currency) {
+    return update(db.currencys).replace(currency);
   }
 
   // 根据账户类型ID获取账户类型

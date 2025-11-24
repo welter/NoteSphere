@@ -36,7 +36,7 @@ class TransactionDao extends DatabaseAccessor<TradingDatabase> with _$Transactio
   TransactionDao(super.db);
 
   // 插入新股票（标的）
-  Future<int> insertAssets(TransactionsCompanion transactions) {
+  Future<int> insertTransactions(Transaction transactions) {
     return into(db.transactions).insert(transactions);
   }
 
@@ -56,7 +56,7 @@ class TransactionDao extends DatabaseAccessor<TradingDatabase> with _$Transactio
   }
 
   // 更新股票（标的）信息
-  Future<bool> updateTransactions(TransactionsCompanion transactions) {
+  Future<bool> updateTransactions(Transaction transactions) {
     return update(db.transactions).replace(transactions);
   }
   // 根据symbol_ID获取股票（标的）信息

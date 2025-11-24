@@ -3,9 +3,9 @@ import 'package:brainbox/models/note_model.dart';
 import 'package:brainbox/services/note_service.dart';
 import 'package:brainbox/utils/colors.dart';
 import 'package:brainbox/utils/constants.dart';
-import 'package:brainbox/utils/router.dart';
 import 'package:brainbox/utils/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
@@ -228,7 +228,7 @@ class _UpdateNotePageState extends State<UpdateNotePage> {
                                 //clear the form
                                 _noteTitileController.clear();
                                 _noteContentController.clear();
-                                AppRouter.router.push("/notes");
+                                Get.toNamed("/notes");
                               } catch (e) {
                                 //show a snackbar
                                 AppHelpers.showSnackBar(

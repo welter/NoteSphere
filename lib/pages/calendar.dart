@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:brainbox/helpers/show_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:brainbox/services/note_service.dart';
+import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:brainbox/widgets/notes_card.dart';
 import 'package:brainbox/pages/create_note.dart';
@@ -9,7 +10,6 @@ import 'package:brainbox/widgets/note_category_card.dart';
 import '../models/note_model.dart';
 //import '../crud/journal_services.dart';
 import '../helpers/constants.dart';
-import 'package:brainbox/utils/router.dart';
 //import '../models/journal.dart';
 //import '../widgets/journal_card.dart';
 //import 'add_journal.dart';
@@ -69,7 +69,7 @@ class _CalendarCardState extends State<CalendarCard> {
   //edit note
   void _editNote(Note note) {
     //navigate to the edit note page
-    AppRouter.router.push('/edit-note', extra: note);
+    Get.toNamed('/edit-note', arguments: note);
   }
 
   Widget build(BuildContext context) {
@@ -294,9 +294,9 @@ class _CalendarCardState extends State<CalendarCard> {
                                         },
                                         viewSingleNote: () {
                                           print("viewSingleNote(notes_by_category.dart),noteList:"+noteList[index].toString());
-                                          AppRouter.router.push(
+                                          Get.toNamed(
                                             "/single-note",
-                                            extra: noteList[index],
+                                            arguments: noteList[index],
                                           );
                                         },
                                       );

@@ -3,11 +3,11 @@ import 'package:brainbox/models/todo_model.dart';
 import 'package:brainbox/pages/todo_data_inharited.dart';
 import 'package:brainbox/services/todo_service.dart';
 import 'package:brainbox/utils/colors.dart';
-import 'package:brainbox/utils/router.dart';
 import 'package:brainbox/utils/text_styles.dart';
 import 'package:brainbox/widgets/completed_todo_tab.dart';
 import 'package:brainbox/widgets/todo_tab.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ToDoPage extends StatefulWidget {
   const ToDoPage({Key? key}) : super(key: key);
@@ -120,7 +120,7 @@ class _ToDoPageState extends State<ToDoPage>
             ElevatedButton(
               onPressed: () {
                 _addTodo();
-                AppRouter.router.go("/todos");
+                Get.toNamed("/todos");
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
@@ -168,7 +168,7 @@ class _ToDoPageState extends State<ToDoPage>
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              AppRouter.router.go("/");
+              Get.toNamed("/");
             },
           ),
           bottom: TabBar(

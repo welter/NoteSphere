@@ -2,10 +2,10 @@ import 'package:brainbox/helpers/show_snackbar.dart';
 import 'package:brainbox/models/note_model.dart';
 import 'package:brainbox/services/note_service.dart';
 import 'package:brainbox/utils/constants.dart';
-import 'package:brainbox/utils/router.dart';
 import 'package:brainbox/utils/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:brainbox/widgets/note_category_card.dart';
+import 'package:get/get.dart';
 
 class NotesByCategoryPage extends StatefulWidget {
   final String category;
@@ -49,7 +49,7 @@ class _NotesByCategoryPageState extends State<NotesByCategoryPage> {
   //edit note
   void _editNote(Note note) {
     //navigate to the edit note page
-    AppRouter.router.push('/edit-note', extra: note);
+    Get.toNamed('/edit-note', arguments: note);
   }
 
   @override
@@ -61,7 +61,7 @@ class _NotesByCategoryPageState extends State<NotesByCategoryPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            AppRouter.router.push(
+            Get.toNamed(
               "/notes",
             );
           },
@@ -109,9 +109,9 @@ class _NotesByCategoryPageState extends State<NotesByCategoryPage> {
                     },
                     viewSingleNote: () {
                       print("viewSingleNote(notes_by_category.dart),noteList:"+noteList[index].toString());
-                      AppRouter.router.push(
+                      Get.toNamed(
                         "/single-note",
-                        extra: noteList[index],
+                        arguments: noteList[index],
                       );
                     },
                   );

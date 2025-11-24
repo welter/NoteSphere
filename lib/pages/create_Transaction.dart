@@ -3,7 +3,6 @@ import 'package:brainbox/models/note_model.dart';
 import 'package:brainbox/services/note_service.dart';
 import 'package:brainbox/utils/colors.dart';
 import 'package:brainbox/utils/constants.dart';
-import 'package:brainbox/utils/router.dart';
 import 'package:brainbox/utils/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/services/text_formatter.dart';
@@ -15,6 +14,8 @@ import 'package:getwidget/getwidget.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:expandable/expandable.dart';
 import 'package:get/get.dart';
+
+import '../utils/transController.dart';
 
 class CreateTransactionPage extends StatefulWidget {
   final bool isNewCategory;
@@ -71,16 +72,17 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
     bool _showTradeTypeDropdown = false;
     bool _showEntryConditionDropdown = false;
     bool _showMoodDropdown = false;
-    print(Get.locale);
+    print('Getxlocal:'+Get.locale.toString());
     print('CreateTransactionPage local:'+Localizations.localeOf(context).toString());
+    final TransController controller = Get.put(TransController());
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              AppRouter.router.go(
-                "/",
+              Get.toNamed(
+                "/home"
               );
             },
           ),
@@ -1553,25 +1555,20 @@ class wGFDropdown<T> extends GFDropdown {
   /// ⭐ 你可以在这里任意处理 item，例如翻译、过滤、排序
   static List<DropdownMenuItem<T>>? _buildItems<T>(
       List<DropdownMenuItem<T>>? items) {
-    String s='1111111';
+    String s='';
     if (items?.isNotEmpty == true) {
-      return items!.map((item) {
-        if (item.value is String) String s= item.value.toString().tr;
+      List<DropdownMenuItem<T>>? a=items!.map((item) {
+        s= item.value.toString().tr;
       return DropdownMenuItem<T>(
         value: item.value,
         enabled: item.enabled,
         onTap: item.onTap,
         alignment:item.alignment,
         key:item.key,
-        child: Builder(
-          builder: (ctx) {
-            print("Get.locale = ${Get.locale}");
-            print("ctx locale = ${Localizations.localeOf(ctx)}");
-            return Text(s);
-          },
-        ),
-      );
+        child:Text(s.tr)
+        );
     }).toList();
+      return a;
     } else return null;
   }
 }

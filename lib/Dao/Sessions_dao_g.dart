@@ -18,13 +18,17 @@ class SessionsDao extends DatabaseAccessor<TradingDatabase> with _$SessionsDaoMi
   SessionsDao(this.db) : super(db);
 
   // 插入交易场所
-  Future<int> insertSession(SessionsCompanion sessions) {
+  Future<int> insertSession(Session sessions) {
     return into(db.sessions).insert(sessions);
   }
 
   // 获取所有交易场所
   Future<List<Session>> getAllSessions() {
     return select(db.sessions).get();
+  }
+  // 更新交易场所
+  Future<bool> updateSession(Session sessions) {
+    return update(db.sessions).replace(sessions);
   }
 
   // 根据ID获取交易场所

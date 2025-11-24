@@ -17,7 +17,7 @@ class SidesDao extends DatabaseAccessor<TradingDatabase> with _$SidesDaoMixin {
   SidesDao(this.db) : super(db);
 
   // 插入买卖方向
-  Future<int> insertMood(SidesCompanion side) {
+  Future<int> insertSide(Side side) {
     return into(db.sides).insert(side);
   }
 
@@ -25,7 +25,10 @@ class SidesDao extends DatabaseAccessor<TradingDatabase> with _$SidesDaoMixin {
   Future<List<Side>> getAllSides() {
     return select(db.sides).get();
   }
-
+  // 更新股票（标的）信息
+  Future<bool> updateSide(Side side) {
+    return update(db.sides).replace(side);
+  }
   // 根据ID获取买卖方向
   Future<Side?> getSideById(int id) {
     return (select(db.sides)..where((t) => t.id.equals(id))).getSingleOrNull();

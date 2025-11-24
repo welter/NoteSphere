@@ -10,8 +10,8 @@ import 'package:brainbox/pages/update_note.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../pages/create_Transaction.dart';
-import '../pages/test.dart';
+import '../lib/pages/create_Transaction.dart';
+import '../lib/pages/test.dart';
 class AppWrapper extends StatelessWidget {
   final Widget child;
   AppWrapper({required this.child});

@@ -3,12 +3,12 @@ import 'package:brainbox/models/todo_model.dart';
 import 'package:brainbox/pages/todo_data_inharited.dart';
 import 'package:brainbox/services/note_service.dart';
 import 'package:brainbox/services/todo_service.dart';
-import 'package:brainbox/utils/router.dart';
 import 'package:brainbox/utils/text_styles.dart';
 import 'package:brainbox/widgets/main_screen_todo_card.dart';
 import 'package:brainbox/widgets/notes_todo_card.dart';
 import 'package:brainbox/widgets/progress_card.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -65,7 +65,8 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       allToDos.sort((a, b) => a.date.compareTo(b.date));
     });
-
+    print('Getxlocal:'+Get.locale.toString());
+    print('HomePage local:'+Localizations.localeOf(context).toString());
     return ToDoData(
       todos: allToDos,
       onTodosChanged: _loadToDos,
@@ -94,7 +95,9 @@ class _HomePageState extends State<HomePage> {
                     child:GestureDetector(
                     //go to notes page using gorouter
                     onTap: () {
-                      AppRouter.router.push("/notes");
+                      Get.toNamed(
+                        "/single-note"
+                      );
                     },
                     child: NotesTodoCard(
                       title: 'Notes',
@@ -107,7 +110,9 @@ class _HomePageState extends State<HomePage> {
                     child:GestureDetector(
                     //go to todo page using gorouter
                     onTap: () {
-                      AppRouter.router.push("/test");
+                      Get.toNamed(
+                        "/test"
+                      );
                     },
                     child: NotesTodoCard(
                       title: '测试',
@@ -120,7 +125,9 @@ class _HomePageState extends State<HomePage> {
                     child:GestureDetector(
                     //go to calendar page using gorouter
                     onTap: () {
-                      AppRouter.router.push("/createTransaction");
+                      Get.toNamed(
+                      "/createTransaction"
+                      );
                     },
                     child: NotesTodoCard(
                       title: '日历视图',
@@ -170,7 +177,9 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               onPressed: () {
-                                AppRouter.router.push("/todos");
+                                Get.toNamed(
+                                "/todos"
+                                );
                               },
                               child: const Text("Add Task"),
                             ),

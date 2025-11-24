@@ -6,7 +6,7 @@ class AccountDao extends DatabaseAccessor<TradingDatabase> with _$AccountDaoMixi
   AccountDao(TradingDatabase db) : super(db);
 
   // 插入新账户
-  Future<int> insertAccount(AccountsCompanion account) {
+  Future<int> insertAccount(Account account) {
     return into(db.accounts).insert(account);
   }
 
@@ -26,7 +26,7 @@ class AccountDao extends DatabaseAccessor<TradingDatabase> with _$AccountDaoMixi
   }
 
   // 更新账户信息
-  Future<bool> updateAccount(AccountsCompanion account) {
+  Future<bool> updateAccount(Account account) {
     return update(db.accounts).replace(account);
   }
   // 获取账户的总余额（例如，可以进行汇总或其他分析操作）

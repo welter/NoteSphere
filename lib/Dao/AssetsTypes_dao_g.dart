@@ -8,13 +8,18 @@ class AssetsTypesDao extends DatabaseAccessor<TradingDatabase> with _$AssetsType
   AssetsTypesDao(this.db) : super(db);
 
   // 插入资产类型
-  Future<int> insertAssetsType(AssetsTypesCompanion assetsType) {
+  Future<int> insertAssetsType(AssetsType assetsType) {
     return into(db.assetsTypes).insert(assetsType);
   }
 
   // 获取所有资产类型
   Future<List<AssetsType>> getAllAssetsTypes() {
     return select(db.assetsTypes).get();
+  }
+
+  // 更新资产类型
+  Future<bool> updateAssetsType(AssetsType assetsType) {
+    return update(db.assetsTypes).replace(assetsType);
   }
 
   // 根据资产类型ID获取资产类型

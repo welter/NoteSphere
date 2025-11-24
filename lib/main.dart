@@ -1,13 +1,13 @@
 import 'package:brainbox/models/note_model.dart';
 import 'package:brainbox/models/todo_model.dart';
 import 'package:brainbox/pages/todo_data_inharited.dart';
-import 'package:brainbox/utils/router.dart';
 import 'package:brainbox/utils/theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:get/get.dart';
 import 'langs/messages.dart';
+import 'package:brainbox/utils/getxRouter.dart';
 void main() async {
   // Initialize Hive
   await Hive.initFlutter();
@@ -31,10 +31,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ToDoData(
-      todos: [],
-      onTodosChanged: () {},
-      child: GetMaterialApp.router(
+    return  GetMaterialApp(
         title: 'Notes',
         debugShowCheckedModeBanner: false,
         theme: ThemeClass.darkTheme.copyWith(
@@ -43,12 +40,10 @@ class MyApp extends StatelessWidget {
           ),
         ),
           translations:Messages(),
-          locale:  Get.locale,
+          locale:  Locale('zh', 'CN'),
+        initialRoute: '/home', // 设置默认路由
         fallbackLocale: Locale('en', 'US'),
-        routerDelegate: AppRouter.router.routerDelegate,
-        routeInformationParser: AppRouter.router.routeInformationParser,
-        routeInformationProvider: AppRouter.router.routeInformationProvider,
-      ),
+        getPages: getxRouter.routes,   // 使用 getxRoutes 中的路由配置
     );
   }
 }

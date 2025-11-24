@@ -19,13 +19,18 @@ class ReasonDao extends DatabaseAccessor<TradingDatabase> with _$ReasonDaoMixin 
   ReasonDao(this.db) : super(db);
 
   // 插入常用交易理由
-  Future<int> insertReason(ReasonCompanion reason) {
+  Future<int> insertReason(ReasonData reason) {
     return into(db.reason).insert(reason);
   }
 
   // 获取所有常用交易理由
   Future<List<ReasonData>> getAllReasons() {
     return select(db.reason).get();
+  }
+
+  // 更新常用交易理由
+  Future<bool> updateReason(ReasonData reason) {
+    return update(db.reason).replace(reason);
   }
 
   // 根据ID获取常用交易理由

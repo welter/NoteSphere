@@ -3,9 +3,9 @@ import 'package:brainbox/models/todo_model.dart';
 import 'package:brainbox/pages/todo_data_inharited.dart';
 import 'package:brainbox/services/todo_service.dart';
 import 'package:brainbox/utils/constants.dart';
-import 'package:brainbox/utils/router.dart';
 import 'package:brainbox/widgets/todo_card.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ToDoTab extends StatefulWidget {
   final List<ToDo> inCompleteToDos;
@@ -35,7 +35,7 @@ class _ToDoTabState extends State<ToDoTab> {
       setState(() {
         widget.inCompleteToDos.remove(toDo);
       });
-      AppRouter.router.go("/todos");
+      Get.offNamed("/todos");
     } catch (e) {
       print(e);
       //show snackbar

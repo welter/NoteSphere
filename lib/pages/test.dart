@@ -2,7 +2,7 @@ import 'package:brainbox/models/note_model.dart';
 import 'package:brainbox/services/note_service.dart';
 import 'package:brainbox/utils/colors.dart';
 import 'package:brainbox/utils/constants.dart';
-import 'package:brainbox/utils/router.dart';
+import 'package:get/get.dart';
 import 'package:brainbox/utils/text_styles.dart';
 import 'package:brainbox/widgets/bottom_sheet.dart';
 import 'package:brainbox/widgets/notes_card.dart';
@@ -29,11 +29,11 @@ class _TestPageState extends State<TestPage> {
         return CategoryInputBottomSheet(
           onNewNote: () {
             Navigator.pop(context);
-            AppRouter.router.push("/create-note", extra: false);
+            Get.toNamed("/create-note", arguments: false);
           },
           onNewCategory: () {
             Navigator.pop(context);
-            AppRouter.router.push("/create-note", extra: true);
+            Get.toNamed("/create-note", arguments: true);
           },
         );
       },
