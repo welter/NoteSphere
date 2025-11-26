@@ -19,13 +19,18 @@ class RemarksDao extends DatabaseAccessor<TradingDatabase> with _$RemarksDaoMixi
   RemarksDao(this.db) : super(db);
 
   // 插入交易记录备注
-  Future<int> insertMood(RemarksCompanion remark) {
+  Future<int> insertRemark(Remark remark) {
     return into(db.remarks).insert(remark);
   }
 
   // 获取所有交易记录备注
   Future<List<Remark>> getAllRemarks() {
     return select(db.remarks).get();
+  }
+
+  // 更新交易记录备注
+  Future<bool> updateRemark(Remark remark) {
+    return update(db.remarks).replace(remark);
   }
 
   // 根据ID获取交易记录备注

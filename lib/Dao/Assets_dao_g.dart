@@ -17,7 +17,7 @@ class AssetsDao extends DatabaseAccessor<TradingDatabase> with _$AssetsDaoMixin 
   AssetsDao(TradingDatabase db) : super(db);
 
   // 插入新账户
-  Future<int> insertAssets(AssetsCompanion assets) {
+  Future<int> insertAssets(Asset assets) {
     return into(db.assets).insert(assets);
   }
 
@@ -37,7 +37,7 @@ class AssetsDao extends DatabaseAccessor<TradingDatabase> with _$AssetsDaoMixin 
   }
 
   // 更新账户信息
-  Future<bool> updateAccount(AssetsCompanion assets) {
+  Future<bool> updateAccount(Asset assets) {
     return update(db.assets).replace(assets);
   }
   // 根据symbol_ID获取账户

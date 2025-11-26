@@ -71,8 +71,9 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
     bool _showTradeTypeDropdown = false;
     bool _showEntryConditionDropdown = false;
     bool _showMoodDropdown = false;
-    print(Get.locale);
+    print('Getxlocal:'+Get.locale.toString());
     print('CreateTransactionPage local:'+Localizations.localeOf(context).toString());
+    final TransController controller = Get.put(TransController());
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -1553,25 +1554,20 @@ class wGFDropdown<T> extends GFDropdown {
   /// ⭐ 你可以在这里任意处理 item，例如翻译、过滤、排序
   static List<DropdownMenuItem<T>>? _buildItems<T>(
       List<DropdownMenuItem<T>>? items) {
-    String s='1111111';
+    String s='';
     if (items?.isNotEmpty == true) {
-      return items!.map((item) {
-        if (item.value is String) String s= item.value.toString().tr;
+      List<DropdownMenuItem<T>>? a=items!.map((item) {
+        s= item.value.toString().tr;
       return DropdownMenuItem<T>(
         value: item.value,
         enabled: item.enabled,
         onTap: item.onTap,
         alignment:item.alignment,
         key:item.key,
-        child: Builder(
-          builder: (ctx) {
-            print("Get.locale = ${Get.locale}");
-            print("ctx locale = ${Localizations.localeOf(ctx)}");
-            return Text(s);
-          },
-        ),
-      );
+        child:Text(s.tr)
+        );
     }).toList();
+      return a;
     } else return null;
   }
 }

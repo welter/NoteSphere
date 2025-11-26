@@ -23,8 +23,8 @@ class CategoriesDao extends DatabaseAccessor<TradingDatabase> with _$CategoriesD
   CategoriesDao(this.db) : super(db);
 
   // 插入交易分类
-  Future<int> insertCategorie(CategoriesCompanion categorie) {
-    return into(db.categories).insert(categorie);
+  Future<int> insertCategory(Category category) {
+    return into(db.categories).insert(category);
   }
 
   // 获取所有交易分类
@@ -33,21 +33,26 @@ class CategoriesDao extends DatabaseAccessor<TradingDatabase> with _$CategoriesD
   }
 
   // 根据ID获取交易分类
-  Future<Category?> getCategorieById(int id) {
+  Future<Category?> getCategoryById(int id) {
     return (select(db.categories)..where((t) => t.id.equals(id))).getSingleOrNull();
   }
 
+  // 更新交易分类
+  Future<bool> updateCategory(Category category) {
+    return update(db.categories).replace(category);
+  }
+
   // 根据ID获取所属所有下级交易分类
-  Future<Category?> getAllFollowingCategorieById(int topId) {
+  Future<Category?> getAllFollowingCategoryById(int topId) {
     return (select(db.categories)..where((t) => t.parentId.equals(topId))).getSingleOrNull();
   }
   // 根据名称查询心情
-  Future<List<Category>> getCategorieByName(String name) {
+  Future<List<Category>> getCategoryByName(String name) {
     return (select(db.categories)..where((t) => t.name.like('%$name%'))).get();
   }
 
   // 根据ID删除交易分类，包括所有下级交易分类
-  Future deleteAllFollowingCategorieById(int topId) {
+  Future deleteAllFollowingCategoryById(int topId) {
     return (delete(db.categories)..where((t) => t.parentId.equals(topId))).go();
   }
 }

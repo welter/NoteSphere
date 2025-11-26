@@ -8,7 +8,7 @@ class AccountsTypeDao extends DatabaseAccessor<TradingDatabase> with _$AccountsT
   AccountsTypeDao(this.db) : super(db);
 
   // 插入账户类型
-  Future<int> insertAccountType(AccountTypesCompanion accountType) {
+  Future<int> insertAccountType(AccountType accountType) {
     return into(db.accountTypes).insert(accountType);
   }
 
@@ -16,7 +16,10 @@ class AccountsTypeDao extends DatabaseAccessor<TradingDatabase> with _$AccountsT
   Future<List<AccountType>> getAllAccountTypes() {
     return select(db.accountTypes).get();
   }
-
+  // 更新账户类型
+  Future<bool> updateAccountType(AccountType accountType) {
+    return update(db.accountTypes).replace(accountType);
+  }
   // 根据账户类型ID获取账户类型
   Future<AccountType?> getAccountTypeById(int id) {
     return (select(db.accountTypes)..where((t) => t.id.equals(id))).getSingleOrNull();

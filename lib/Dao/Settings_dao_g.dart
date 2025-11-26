@@ -20,10 +20,13 @@ class SettingsDao extends DatabaseAccessor<TradingDatabase> with _$SettingsDaoMi
   SettingsDao(this.db) : super(db);
 
   // 插入标签
-  Future<int> insertSetting(SettingsCompanion settings) {
-    return into(db.settings).insert(settings);
+  Future<int> insertSetting(Setting setting) {
+    return into(db.settings).insert(setting);
   }
-
+  // 更新标签
+  Future<bool> updateSetting(Setting setting) {
+    return update(db.settings).replace(setting);
+  }
   // 获取所有标签
   Future<List<Setting>> getAllSettings() {
     return select(db.settings).get();

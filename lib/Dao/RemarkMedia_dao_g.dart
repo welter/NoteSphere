@@ -20,13 +20,18 @@ class RemarkMediaDao extends DatabaseAccessor<TradingDatabase> with _$RemarkMedi
   RemarkMediaDao(this.db) : super(db);
 
   // 插入交易记录备注附件
-  Future<int> insertRemarkMedia(RemarkMediaCompanion remarkMedia) {
+  Future<int> insertRemarkMedia(RemarkMediaData remarkMedia) {
     return into(db.remarkMedia).insert(remarkMedia);
   }
 
   // 获取所有交易记录备注附件
   Future<List<RemarkMediaData>> getAllRemarkMedia() {
     return select(db.remarkMedia).get();
+  }
+
+  // 更新交易记录备注附件
+  Future<bool> updateRemarkMedia(RemarkMediaData remarkMedia) {
+    return update(db.remarkMedia).replace(remarkMedia);
   }
 
   // 根据ID获取交易记录备注附件

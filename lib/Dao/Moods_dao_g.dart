@@ -19,13 +19,18 @@ class MoodsDao extends DatabaseAccessor<TradingDatabase> with _$MoodsDaoMixin {
   MoodsDao(this.db) : super(db);
 
   // 插入心情
-  Future<int> insertMood(MoodsCompanion mood) {
+  Future<int> insertMood(Mood mood) {
     return into(db.moods).insert(mood);
   }
 
   // 获取所有心情
   Future<List<Mood>> getAllMoods() {
     return select(db.moods).get();
+  }
+
+  // 更新心情
+  Future<bool> updatetMood(Mood mood) {
+    return update(db.moods).replace(mood);
   }
 
   // 根据ID获取心情

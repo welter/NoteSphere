@@ -21,10 +21,13 @@ class TransactionMediaDao extends DatabaseAccessor<TradingDatabase> with _$Trans
   TransactionMediaDao(this.db) : super(db);
 
   // 插入交易记录附件
-  Future<int> insertTransactionMedia(TransactionMediaCompanion transactionMedia) {
+  Future<int> insertTransactionMedia(TransactionMediaData transactionMedia) {
     return into(db.transactionMedia).insert(transactionMedia);
   }
-
+  // 更新交易记录附件
+  Future<bool> updateTransactionMedia(TransactionMediaData transactionMedia) {
+    return update(db.transactionMedia).replace(transactionMedia);
+  }
   // 获取所有交易记录附件
   Future<List<TransactionMediaData>> getAllTransactionMedias() {
     return select(db.transactionMedia).get();

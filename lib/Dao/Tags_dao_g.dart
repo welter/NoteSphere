@@ -17,10 +17,13 @@ class TagsDao extends DatabaseAccessor<TradingDatabase> with _$TagsDaoMixin {
   TagsDao(this.db) : super(db);
 
   // 插入标签
-  Future<int> insertTag(TagsCompanion tag) {
+  Future<int> insertTag(Tag tag) {
     return into(db.tags).insert(tag);
   }
-
+  // 更新标签
+  Future<bool> updateTag(Tag tag) {
+    return update(db.tags).replace(tag);
+  }
   // 获取所有标签
   Future<List<Tag>> getAllTags() {
     return select(db.tags).get();

@@ -17,10 +17,14 @@ class TraderTypesDao extends DatabaseAccessor<TradingDatabase> with _$TraderType
   TraderTypesDao(this.db) : super(db);
 
   // 插入交易类型
-  Future<int> insertTraderType(TraderTypesCompanion traderType) {
+  Future<int> insertTraderType(TraderType traderType) {
     return into(db.traderTypes).insert(traderType);
   }
 
+  // 更新交易类型
+  Future<bool> updateTraderType(TraderType traderType) {
+    return update(db.traderTypes).replace(traderType);
+  }
   // 获取所有交易类型
   Future<List<TraderType>> getAllTraderTypes() {
     return select(db.traderTypes).get();
