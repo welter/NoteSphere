@@ -73,7 +73,6 @@ class _CreateTransactionPageState extends State<CreateTransactionPage> {
     bool _showMoodDropdown = false;
     print('Getxlocal:'+Get.locale.toString());
     print('CreateTransactionPage local:'+Localizations.localeOf(context).toString());
-    final TransController controller = Get.put(TransController());
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
